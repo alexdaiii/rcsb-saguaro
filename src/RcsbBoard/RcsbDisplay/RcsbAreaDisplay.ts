@@ -1,265 +1,324 @@
-import {RcsbLineDisplay} from "./RcsbLineDisplay";
-import {area, Area, curveStep, curveCardinal, curveBasis, curveLinear} from "d3-shape";
-import {InterpolationTypes} from "../../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import { RcsbLineDisplay } from "./RcsbLineDisplay";
 import {
-    MoveAreaInterface,
-    PlotAreaInterface,
-    RcsbD3AreaManager
+  area,
+  Area,
+  curveStep,
+  curveCardinal,
+  curveBasis,
+  curveLinear,
+} from "d3-shape";
+import { InterpolationTypes } from "../../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {
+  MoveAreaInterface,
+  PlotAreaInterface,
+  RcsbD3AreaManager,
 } from "../RcsbD3/RcsbD3DisplayManager/RcsbD3AreaManager";
 import {
-    RcsbFvColorGradient,
-    RcsbFvTrackData,
-    RcsbFvTrackDataElementInterface
+  RcsbFvColorGradient,
+  RcsbFvTrackData,
+  RcsbFvTrackDataElementInterface,
 } from "../../RcsbDataManager/RcsbDataManager";
-import {largestTriangleOneBucket} from "@d3fc/d3fc-sample";
+import { largestTriangleOneBucket } from "@d3fc/d3fc-sample";
 import {
-    MoveLineInterface,
-    PlotLineInterface,
-    RcsbD3LineManager
+  MoveLineInterface,
+  PlotLineInterface,
+  RcsbD3LineManager,
 } from "../RcsbD3/RcsbD3DisplayManager/RcsbD3LineManager";
-import {ContainerElement, pointer} from "d3-selection";
+import { ContainerElement, pointer } from "d3-selection";
 
 interface LineColorInterface {
-    points:RcsbFvTrackDataElementInterface[];
-    color: string;
-    alpha?: number;
+  points: RcsbFvTrackDataElementInterface[];
+  color: string;
+  alpha?: number;
 }
 
 export class RcsbAreaDisplay extends RcsbLineDisplay {
-    private area: Area<RcsbFvTrackDataElementInterface> = area<RcsbFvTrackDataElementInterface>().curve(curveStep);
-    private multiLine: Array<LineColorInterface> = new Array<LineColorInterface>();
-    private blockAreaFlag: boolean = false;
-    private multiAreaFlag: boolean = false;
-    private readonly areaManager: RcsbD3AreaManager = new RcsbD3AreaManager();
-    protected readonly SUFFIX_ID: string = "area_";
-    private index: number;
+  private area: Area<RcsbFvTrackDataElementInterface> =
+    area<RcsbFvTrackDataElementInterface>().curve(curveStep);
+  private multiLine: Array<LineColorInterface> =
+    new Array<LineColorInterface>();
+  private blockAreaFlag: boolean = false;
+  private multiAreaFlag: boolean = false;
+  private readonly areaManager: RcsbD3AreaManager = new RcsbD3AreaManager();
+  protected readonly SUFFIX_ID: string = "area_";
+  private index: number;
 
-    constructor(boardId: string, trackId: string) {
-        super(boardId, trackId);
-        this.trackSubject.mousemove.subscribe(({e,n})=>this.mousemove(e,n));
-        this.trackSubject.mouseleave.subscribe((e)=>this.mouseleave(e));
+  constructor(boardId: string, trackId: string) {
+    super(boardId, trackId);
+    this.trackSubject.mousemove.subscribe(({ e, n }) => this.mousemove(e, n));
+    this.trackSubject.mouseleave.subscribe((e) => this.mouseleave(e));
+  }
+
+  public setInterpolationType(type: string): void {
+    super.setInterpolationType(type);
+    if (type === InterpolationTypes.CARDINAL)
+      this.area = area<RcsbFvTrackDataElementInterface>().curve(curveCardinal);
+    else if (type === InterpolationTypes.STEP)
+      this.area = area<RcsbFvTrackDataElementInterface>().curve(curveStep);
+    else if (type === InterpolationTypes.BASIS)
+      this.area = area<RcsbFvTrackDataElementInterface>().curve(curveBasis);
+    else if (type === InterpolationTypes.LINEAR)
+      this.area = area<RcsbFvTrackDataElementInterface>().curve(curveLinear);
+  }
+
+  public setBlockArea(flag: boolean) {
+    this.blockAreaFlag = flag;
+  }
+
+  public setMultiArea(flag: boolean) {
+    this.multiAreaFlag = flag;
+  }
+
+  private setArea(): void {
+    this.setLine();
+    this.area
+      .x((d: RcsbFvTrackDataElementInterface) => {
+        return this.xScale(d.begin) ?? 0;
+      })
+      .y1((d: RcsbFvTrackDataElementInterface) => {
+        if (d.values instanceof Array) return this.yScale(d.values[1]) ?? 0;
+        return this.yScale(d.value as number) ?? 0;
+      })
+      .y0((d: RcsbFvTrackDataElementInterface) => {
+        if (d.values instanceof Array) return this.yScale(d.values[0]) ?? 0;
+        return this.yScale(0) ?? 0;
+      });
+  }
+
+  private updateArea(): void {
+    this.updateLine();
+    this.area.x((d: RcsbFvTrackDataElementInterface) => {
+      return this.xScale(d.begin) ?? 0;
+    });
+  }
+
+  private mousemove(event: MouseEvent, n: number) {
+    const svgNode: ContainerElement | null = this.g.node();
+    if (svgNode != null) {
+      if (this.innerData[n]) {
+        this.index = n;
+        this.elementSubject.mouseenter.next({
+          d: this.innerData[this.index] as RcsbFvTrackDataElementInterface,
+          e: event,
+        });
+      } else if (n > 0) {
+        this.elementSubject.mouseenter.next({ d: { begin: n }, e: event });
+      } else {
+        this.mouseleave(event);
+      }
+    }
+  }
+
+  private mouseleave(event: MouseEvent) {
+    this.elementSubject.mouseleave.next({ d: { begin: 0 }, e: event });
+  }
+
+  private mouseclick = (event: MouseEvent) => {
+    const svgNode: ContainerElement | null = this.g.node();
+    if (svgNode != null) {
+      const x = pointer(event, svgNode)[0];
+      const position = Math.round(this.xScale.invert(x));
+      const region: RcsbFvTrackDataElementInterface = {
+        begin: position,
+        end: position,
+      };
+      this.getBoardHighlight()(
+        region,
+        event.shiftKey ? "add" : "set",
+        "select",
+        false,
+      );
+      this.elementSubject.mouseclick.next({ d: region, e: event });
+    }
+  };
+
+  protected geoPlot(data: RcsbFvTrackData): void {
+    if (!this.definedScale) {
+      this.setScale();
+      this.setArea();
     }
 
-    public setInterpolationType(type: string): void{
-        super.setInterpolationType(type);
-        if(type === InterpolationTypes.CARDINAL)
-            this.area = area<RcsbFvTrackDataElementInterface>().curve(curveCardinal);
-        else if(type === InterpolationTypes.STEP)
-            this.area = area<RcsbFvTrackDataElementInterface>().curve(curveStep);
-        else if(type === InterpolationTypes.BASIS)
-            this.area = area<RcsbFvTrackDataElementInterface>().curve(curveBasis);
-        else if(type === InterpolationTypes.LINEAR)
-            this.area = area<RcsbFvTrackDataElementInterface>().curve(curveLinear);
+    if (typeof this._displayColor === "string") {
+      this.multiLine = [
+        { points: this.downSampling(data), color: this._displayColor },
+      ];
+    } else if (typeof this._displayColor === "object") {
+      this.multiLine = this.downSamplingSplit(
+        data,
+        buildColorThreshold(this._displayColor),
+      );
     }
-
-    public setBlockArea(flag: boolean){
-        this.blockAreaFlag = flag;
+    if (!this.blockAreaFlag)
+      this.areaManager.plotAxis({
+        trackG: this.g,
+        x1: this.xScale.range()[0],
+        x2: this.xScale.range()[1],
+        y1: this.yScale(0) ?? 0,
+        y2: this.yScale(0) ?? 0,
+      });
+    if (this.multiLine.length == 1 && !this.blockAreaFlag) {
+      const index: number = 0;
+      const e: LineColorInterface = this.multiLine[index];
+      const borderConfig: PlotLineInterface = {
+        points: e.points,
+        line: this.line,
+        color: e.color,
+        trackG: this.g,
+        id: this.SUFFIX_ID + "line_" + index,
+      };
+      RcsbD3LineManager.plot(borderConfig);
     }
+    const areaConfig: Array<PlotAreaInterface> = [];
+    this.multiLine.forEach((e: LineColorInterface, index: number) => {
+      areaConfig.push({
+        points: e.points,
+        color: e.color,
+        trackG: this.g,
+        area: this.area,
+        id: this.SUFFIX_ID + index,
+        opacity: this.blockAreaFlag
+          ? e.alpha
+          : this.multiLine.length > 1 || this.blockAreaFlag
+            ? 1
+            : 0.2,
+        mouseclick: this.mouseclick.bind(this),
+      });
+    });
+    this.areaManager.plot(areaConfig);
+  }
 
-    public setMultiArea(flag: boolean){
-        this.multiAreaFlag = flag;
-    }
+  public move(): void {
+    this.updateArea();
+    this.multiLine.forEach((e: LineColorInterface, index: number) => {
+      const areaConfig: MoveAreaInterface = {
+        points: e.points,
+        trackG: this.g,
+        area: this.area,
+        id: this.SUFFIX_ID + index,
+      };
+      this.areaManager.move(areaConfig);
+      if (this.multiLine.length == 1) {
+        const borderConfig: MoveLineInterface = {
+          points: e.points,
+          line: this.line,
+          trackG: this.g,
+          id: this.SUFFIX_ID + "line_" + index,
+        };
+        RcsbD3LineManager.move(borderConfig);
+      }
+    });
+    this.setDataUpdated(false);
+  }
 
-    private setArea(): void{
-        this.setLine();
-        this.area
-            .x((d:RcsbFvTrackDataElementInterface) => {
-                return this.xScale(d.begin) ?? 0;
-            })
-            .y1((d:RcsbFvTrackDataElementInterface) => {
-                if(d.values instanceof Array)
-                    return this.yScale(d.values[1]) ?? 0;
-                return this.yScale(d.value as number) ?? 0;
-            })
-            .y0( (d:RcsbFvTrackDataElementInterface) => {
-                if(d.values instanceof Array)
-                    return this.yScale(d.values[0]) ?? 0;
-                return this.yScale(0) ?? 0;
-            });
-    }
-
-    private updateArea(): void{
-        this.updateLine();
-        this.area
-            .x((d:RcsbFvTrackDataElementInterface) => {
-                return this.xScale(d.begin) ?? 0;
-            })
-    }
-
-     private mousemove(event:MouseEvent, n: number){
-        const svgNode:ContainerElement | null  = this.g.node();
-        if(svgNode != null) {
-            if(this.innerData[n]) {
-                this.index = n;
-                this.elementSubject.mouseenter.next({d: this.innerData[this.index] as RcsbFvTrackDataElementInterface, e: event});
-            } else if(n>0){
-                this.elementSubject.mouseenter.next({d: {begin: n}, e: event});
-            }else{
-                this.mouseleave(event);
-            }
-        }
-    }
-
-    private mouseleave(event:MouseEvent){
-        this.elementSubject.mouseleave.next({d: {begin: 0}, e: event});
-    }
-
-
-    private mouseclick = (event: MouseEvent)=>{
-        const svgNode:ContainerElement | null  = this.g.node();
-        if(svgNode != null) {
-            const x = pointer(event, svgNode)[0];
-            const position = Math.round(this.xScale.invert(x));
-            const region: RcsbFvTrackDataElementInterface = {begin: position, end: position};
-            this.getBoardHighlight()(region, event.shiftKey ? 'add' : 'set', 'select', false);
-            this.elementSubject.mouseclick.next({d: region, e: event});
-        }
+  private downSamplingSplit(
+    points: RcsbFvTrackDataElementInterface[],
+    gradient: { thresholds: Array<number>; colors: Array<string> },
+  ): Array<LineColorInterface> {
+    const tmp: Array<LineColorInterface> = new Array<LineColorInterface>();
+    const lineColorArray: Array<LineColorInterface> =
+      new Array<LineColorInterface>();
+    const domain: { min: number; max: number } = {
+      min: Number.MAX_SAFE_INTEGER,
+      max: Number.MIN_SAFE_INTEGER,
     };
-
-    protected geoPlot(data:RcsbFvTrackData): void {
-        if(!this.definedScale){
-            this.setScale();
-            this.setArea();
-        }
-
-        if(typeof this._displayColor === "string") {
-            this.multiLine = [{points: this.downSampling(data), color: this._displayColor}];
-        }else if(typeof this._displayColor === "object"){
-            this.multiLine = this.downSamplingSplit(data,buildColorThreshold(this._displayColor));
-        }
-        if(!this.blockAreaFlag)
-            this.areaManager.plotAxis({
-                trackG: this.g,
-                x1: this.xScale.range()[0],
-                x2: this.xScale.range()[1],
-                y1: this.yScale(0) ?? 0,
-                y2: this.yScale(0) ?? 0
-            });
-        if(this.multiLine.length == 1 && !this.blockAreaFlag) {
-            const index: number = 0;
-            const e:LineColorInterface = this.multiLine[index];
-            const borderConfig: PlotLineInterface = {
-                points: e.points,
-                line: this.line,
-                color: e.color,
-                trackG: this.g,
-                id: this.SUFFIX_ID + "line_" + index
-            };
-            RcsbD3LineManager.plot(borderConfig)
-        }
-        const areaConfig: Array<PlotAreaInterface> = [];
-        this.multiLine.forEach((e:LineColorInterface,index:number)=>{
-             areaConfig.push({
-                 points: e.points,
-                 color: e.color,
-                 trackG: this.g,
-                 area: this.area,
-                 id:this.SUFFIX_ID+index,
-                 opacity: (this.blockAreaFlag ? e.alpha : ((this.multiLine.length > 1 || this.blockAreaFlag) ? 1 : .2)),
-                 mouseclick:this.mouseclick.bind(this)
-            });
-        });
-        this.areaManager.plot(areaConfig);
+    points.forEach((p) => {
+      if (p.begin < domain.min) domain.min = p.begin - 0.5;
+      if (p.begin > domain.max) domain.max = p.begin + 0.5;
+    });
+    domain.min = Math.max(domain.min, this.xScale.domain()[0]);
+    domain.max = Math.min(domain.max, this.xScale.domain()[1]);
+    gradient.colors.forEach((c, i) => {
+      tmp[i] = {
+        points: new Array<RcsbFvTrackDataElementInterface>(),
+        color: c,
+      };
+    });
+    const thr = this.maxPoints;
+    for (let n = Math.ceil(domain.min); n < domain.max; n++) {
+      this.innerData.push(null);
+      gradient.colors.forEach((c, i) => {
+        tmp[i].points[n] = { begin: n, value: 0, values: [0, 0] };
+      });
     }
-
-    public move(): void{
-        this.updateArea();
-        this.multiLine.forEach((e:LineColorInterface,index:number)=>{
-            const areaConfig: MoveAreaInterface = {
-                points: e.points,
-                trackG: this.g,
-                area: this.area,
-                id:this.SUFFIX_ID+index
-            };
-            this.areaManager.move(areaConfig);
-            if(this.multiLine.length == 1) {
-                const borderConfig: MoveLineInterface = {
-                    points: e.points,
-                    line: this.line,
-                    trackG: this.g,
-                    id: this.SUFFIX_ID + "line_" + index
-                };
-                RcsbD3LineManager.move(borderConfig);
-            }
-        });
-        this.setDataUpdated(false);
-    }
-
-    private downSamplingSplit(points: RcsbFvTrackDataElementInterface[], gradient:{thresholds:Array<number>;colors:Array<string>;}):Array<LineColorInterface> {
-        const tmp:Array<LineColorInterface> = new Array<LineColorInterface>();
-        const lineColorArray:Array<LineColorInterface> = new Array<LineColorInterface>();
-        const domain: {min:number;max:number;} = {min:Number.MAX_SAFE_INTEGER,max:Number.MIN_SAFE_INTEGER};
-        points.forEach(p=>{
-            if(p.begin<domain.min)domain.min = p.begin-0.5;
-            if(p.begin>domain.max)domain.max = p.begin+0.5;
-        });
-        domain.min = Math.max(domain.min,this.xScale.domain()[0]);
-        domain.max = Math.min(domain.max,this.xScale.domain()[1]);
-        gradient.colors.forEach((c,i)=>{
-            tmp[i] = {points:new Array<RcsbFvTrackDataElementInterface>(),color:c};
-        });
-        const thr = this.maxPoints;
-        for(let n = Math.ceil(domain.min); n<domain.max; n++){
-            this.innerData.push(null);
-            gradient.colors.forEach((c,i)=>{
-                tmp[i].points[n] = {begin:n,value:0,values:[0,0]};
-            });
+    points.forEach((p) => {
+      this.innerData[p.begin] = p;
+      if (p.begin > domain.min && p.begin < domain.max) {
+        if (this.multiAreaFlag) {
+          gradient.colors.forEach((c, n) => {
+            if (p.values)
+              tmp[n].points[p.begin] = {
+                ...p,
+                values: [n - 1 < 0 ? 0 : p.values[n - 1], p.values[n]],
+              };
+          });
+        } else {
+          const thrIndex: number = searchClassThreshold(
+            p.value as number,
+            gradient.thresholds,
+          );
+          tmp[thrIndex].points[p.begin] = this.blockAreaFlag
+            ? { ...p, value: 1 }
+            : p;
         }
-        points.forEach((p) => {
-            this.innerData[p.begin]=p;
-            if(p.begin>domain.min && p.begin<domain.max) {
-                if(this.multiAreaFlag){
-                    gradient.colors.forEach((c,n)=>{
-                        if(p.values)
-                            tmp[n].points[p.begin] = {...p, values:[ (n-1)<0 ? 0 : p.values[n-1],p.values[n] ]};
-                    })
-                }else{
-                    const thrIndex: number = searchClassThreshold(p.value as number, gradient.thresholds);
-                    tmp[thrIndex].points[p.begin] = this.blockAreaFlag ? {...p, value: 1} : p;
-                }
-            }
+      }
+    });
+    tmp.forEach((lineColor, index) => {
+      let out: RcsbFvTrackDataElementInterface[] = [];
+      const filterPoints = lineColor.points.filter(
+        (p) => p != null && p.begin > domain.min && p.begin < domain.max,
+      );
+      filterPoints.forEach((p, n) => {
+        if (
+          !(
+            out[out.length - 1]?.value == p.value &&
+            p.value == filterPoints[n + 1]?.value
+          ) ||
+          this.multiAreaFlag
+        )
+          out.push(p);
+      });
+      out.unshift({ begin: domain.min, value: 0, values: [0, 0] });
+      out.unshift({ begin: this.xScale.domain()[0], value: 0, values: [0, 0] });
+      out.push({ begin: domain.max, value: 0, values: [0, 0] });
+      out.push({ begin: this.xScale.domain()[1], value: 0, values: [0, 0] });
+      if (out.length > thr) {
+        const bucketSize = out.length / thr;
+        const sampler = largestTriangleOneBucket();
+        sampler.bucketSize(bucketSize);
+        sampler.x((d: RcsbFvTrackDataElementInterface) => {
+          return d.begin;
         });
-        tmp.forEach((lineColor, index)=>{
-            let out:RcsbFvTrackDataElementInterface[] = [];
-            const filterPoints = lineColor.points.filter(p=>(p!= null && p.begin>domain.min && p.begin<domain.max));
-            filterPoints.forEach((p,n)=>{
-                if(!(out[out.length-1]?.value == p.value && p.value == filterPoints[n+1]?.value) || this.multiAreaFlag)
-                    out.push(p);
-            });
-            out.unshift({begin:domain.min,value:0,values:[0,0]});
-            out.unshift({begin:this.xScale.domain()[0],value:0,values:[0,0]});
-            out.push({begin:domain.max,value:0,values:[0,0]});
-            out.push({begin:this.xScale.domain()[1],value:0,values:[0,0]});
-            if(out.length>thr){
-                const bucketSize = out.length/thr ;
-                const sampler = largestTriangleOneBucket();
-                sampler.bucketSize(bucketSize);
-                sampler.x((d:RcsbFvTrackDataElementInterface)=>{return d.begin});
-                sampler.y((d:RcsbFvTrackDataElementInterface)=>{return d.value});
-                out = sampler(out);
-            }
-            lineColorArray.push({points:out,color:lineColor.color,alpha:gradient.thresholds[index] ?? 1});
+        sampler.y((d: RcsbFvTrackDataElementInterface) => {
+          return d.value;
         });
-        return lineColorArray.reverse();
-    }
-
+        out = sampler(out);
+      }
+      lineColorArray.push({
+        points: out,
+        color: lineColor.color,
+        alpha: gradient.thresholds[index] ?? 1,
+      });
+    });
+    return lineColorArray.reverse();
+  }
 }
 
-function searchClassThreshold(x: number, thresholds: Array<number>): number{
-    if(x<thresholds[0])
-        return 0;
-    for(let i=0;i<thresholds.length-1;i++){
-        if(thresholds[i+1] > x && x >= thresholds[i] )
-            return i+1
-    }
-    return thresholds.length;
+function searchClassThreshold(x: number, thresholds: Array<number>): number {
+  if (x < thresholds[0]) return 0;
+  for (let i = 0; i < thresholds.length - 1; i++) {
+    if (thresholds[i + 1] > x && x >= thresholds[i]) return i + 1;
+  }
+  return thresholds.length;
 }
 
-function buildColorThreshold(displayColor: RcsbFvColorGradient): {thresholds:Array<number>;colors:Array<string>;} {
-    if(displayColor.colors instanceof Array)
-        return {thresholds: displayColor.thresholds, colors: displayColor.colors};
-    return {
-        thresholds: displayColor.thresholds,
-        colors: Array(displayColor.thresholds.length+1).fill(displayColor.colors)
-    };
+function buildColorThreshold(displayColor: RcsbFvColorGradient): {
+  thresholds: Array<number>;
+  colors: Array<string>;
+} {
+  if (displayColor.colors instanceof Array)
+    return { thresholds: displayColor.thresholds, colors: displayColor.colors };
+  return {
+    thresholds: displayColor.thresholds,
+    colors: Array(displayColor.thresholds.length + 1).fill(displayColor.colors),
+  };
 }
