@@ -5,7 +5,10 @@ import {
   RcsbD3ScaleFactory,
   RcsbScaleInterface,
 } from "../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
-import {RcsbSelection, SelectionInterface} from "../RcsbBoard/RcsbSelection";
+import {
+  BoardSelectionInterface,
+  RcsbSelection,
+} from "../RcsbBoard/RcsbSelection";
 import {RcsbFvTrackData} from "../RcsbDataManager/RcsbDataManager";
 import {
   RcsbFvBoard,
@@ -310,7 +313,7 @@ export class RcsbFv<
   /**Get selected board ranges
    * @param mode selection type
    **/
-  public getSelection(mode: "select" | "hover"): SelectionInterface[] {
+  public getSelection(mode: "select" | "hover"): BoardSelectionInterface[] {
     return this.selection.getSelected(mode);
   }
 

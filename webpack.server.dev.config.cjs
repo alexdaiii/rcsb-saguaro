@@ -22,10 +22,8 @@ const commonConfig = {
         loader: "ts-loader",
         exclude: /node_modules/,
         options: {
-          compilerOptions: {
-            "emitDeclarationOnly": false
-          }
-        }
+          configFile: "tsconfig.devserver.json",
+        },
       },
       {
         test: /\.jsx?$/,

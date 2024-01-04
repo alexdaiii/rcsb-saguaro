@@ -1,4 +1,17 @@
-import {RcsbFv, RcsbFvDisplayTypes, RcsbFvRowConfigInterface} from "../../src";
+"use client";
+
+// import {
+//   RcsbFv,
+//   RcsbFvDisplayTypes,
+//   RcsbFvRowConfigInterface,
+// } from "@alexdaiii/rcsb-saguaro";
+import {useEffect} from "react";
+
+import {
+  RcsbFv,
+  RcsbFvDisplayTypes,
+  RcsbFvRowConfigInterface,
+} from "../../../src";
 
 const sequence =
   "MTTQAPTFTQPLQSVVVLEGSTATFEAHISGFPVPEVSWFRDGQVISTSTLPGVQISFSD" +
@@ -14,7 +27,7 @@ const compositeConfig: RcsbFvRowConfigInterface = {
   rowTitle: "Track 1",
   displayConfig: [
     {
-      displayType: RcsbFvDisplayTypes.BLOCK,
+      displayType: RcsbFvDisplayTypes.BLOCK_AREA,
       displayColor: "#9999FF",
       displayId: "compositeBlockSequence",
       displayData: [
@@ -25,7 +38,7 @@ const compositeConfig: RcsbFvRowConfigInterface = {
       ],
     },
     {
-      displayType: RcsbFvDisplayTypes.SEQUENCE,
+      displayType: RcsbFvDisplayTypes.BLOCK,
       displayColor: "#000000",
       displayId: "compositeSeqeunce",
       displayData: [
@@ -48,35 +61,34 @@ const boardConfigData = {
   hideRowGlow: false,
 };
 
-const fv = new RcsbFv({
-  elementId: "pfv",
-  boardConfigData,
-  rowConfigData: Array(500)
-    .fill(undefined)
-    .map((i, n) => {
-      return {
-        ...compositeConfig,
-        rowTitle: `Track ${n}`,
-        trackId: "compositeSequence_" + n,
-        trackVisibility: n % 2 == 0,
-      };
-    }),
-});
+export default function Home() {
+  useEffect(() => {
+    const createFv = async () => {
+      const fv = new RcsbFv({
+        elementId: "pfv",
+        boardConfigData,
+        rowConfigData: Array(500)
+          .fill(undefined)
+          .map((i, n) => {
+            return {
+              ...compositeConfig,
+              rowTitle: `Track ${n}`,
+              trackId: "compositeSequence_" + n,
+              trackVisibility: n % 2 == 0,
+            };
+          }),
+      });
+    };
 
-fv.then(() => {
-  console.log("Ready viewer");
-});
+    createFv().catch((e) => console.error(e));
+  }, []);
 
-/*
-fv.then(async ()=>{
-    for(let i = 0; i< 100; i++){
-        await fv.changeTrackVisibility({
-            trackId: "compositeSequence_"+(2*i+1),
-            visibility: true
-        })
-    }
-    await fv.moveTrack(5,1);
-    await fv.moveTrack(6,2);
-    await fv.moveTrack(10,3);
-});
-*/
+  return (
+    <main
+      className="flex min-h-screen flex-col items-center justify-between
+    p-24"
+    >
+      <div id={"pfv"}></div>
+    </main>
+  );
+}

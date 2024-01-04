@@ -1,16 +1,16 @@
 import {RcsbFvTrackDataElementInterface} from "../RcsbDataManager/RcsbDataManager";
 
-export interface SelectionInterface {
+export interface BoardSelectionInterface {
   rcsbFvTrackDataElement: RcsbFvTrackDataElementInterface;
   domId: string;
 }
 
 //TODO add a callback for the 'hover' case
 export class RcsbSelection {
-  private selectedElements: Array<SelectionInterface> =
-    new Array<SelectionInterface>();
-  private hoverHighlightElements: Array<SelectionInterface> =
-    new Array<SelectionInterface>();
+  private selectedElements: Array<BoardSelectionInterface> =
+    new Array<BoardSelectionInterface>();
+  private hoverHighlightElements: Array<BoardSelectionInterface> =
+    new Array<BoardSelectionInterface>();
   private selectionChangeCallback: (
     selection: Array<RcsbFvTrackDataElementInterface>,
   ) => void;
@@ -21,13 +21,13 @@ export class RcsbSelection {
     this.selectionChangeCallback = f;
   }
 
-  public getSelected(mode: "select" | "hover"): Array<SelectionInterface> {
+  public getSelected(mode: "select" | "hover"): Array<BoardSelectionInterface> {
     if (mode == null || mode === "select") return this.selectedElements;
     else return this.hoverHighlightElements;
   }
 
   public setSelected(
-    elements: Array<SelectionInterface> | SelectionInterface,
+    elements: Array<BoardSelectionInterface> | BoardSelectionInterface,
     mode: "select" | "hover",
   ): void {
     if (mode == null || mode === "select") {
@@ -47,7 +47,7 @@ export class RcsbSelection {
   }
 
   public addSelected(
-    elements: Array<SelectionInterface> | SelectionInterface,
+    elements: Array<BoardSelectionInterface> | BoardSelectionInterface,
     mode: "select" | "hover",
     replaceLast?: boolean,
   ): void {
@@ -73,16 +73,16 @@ export class RcsbSelection {
 
   public clearSelection(mode: "select" | "hover"): void {
     if (mode == null || mode === "select") {
-      this.selectedElements = new Array<SelectionInterface>();
+      this.selectedElements = new Array<BoardSelectionInterface>();
     } else {
-      this.hoverHighlightElements = new Array<SelectionInterface>();
+      this.hoverHighlightElements = new Array<BoardSelectionInterface>();
     }
     this.callback(mode);
   }
 
   public reset(): void {
-    this.selectedElements = new Array<SelectionInterface>();
-    this.hoverHighlightElements = new Array<SelectionInterface>();
+    this.selectedElements = new Array<BoardSelectionInterface>();
+    this.hoverHighlightElements = new Array<BoardSelectionInterface>();
   }
 
   private callback(mode: "select" | "hover"): void {

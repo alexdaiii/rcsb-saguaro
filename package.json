@@ -1,16 +1,21 @@
 {
   "name": "@alexdaiii/rcsb-saguaro",
-  "version": "1.0.0",
+  "version": "1.0.0-beta",
   "description": "Fork of @rcsb/rcsb-saguaro, the RCSB 1D Feature Viewer",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "devServer": "webpack-dev-server --config webpack.server.dev.config.cjs",
     "test": "tsc -p tsconfig.test.json --noEmit",
     "format": "prettier --write \"./**/*.{ts,tsx,js,jsx,json}\"",
+    "lint": "eslint --fix \"./**/*.{ts,tsx,js,jsx,json}\"",
     "build": "rollup -c --bundleConfigAsCjs",
-    "dev_link": "cd dist && npm link"
+    "dev_link": "npm run build && npm unlink @alexdaiii/rcsb-saguaro && npm link",
+    "publish": "npm run build && npm publish --access public"
   },
   "repository": {
     "type": "git",

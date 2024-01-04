@@ -28,21 +28,24 @@ export default [
     plugins: [
       del({targets: "dist/*"}),
       resolve(),
+      commonjs(),
       postcss({
         extract: false,
         modules: true,
         use: ["sass"],
       }),
       svg(),
-      commonjs(),
-      typescript(),
+      typescript({
+        tsconfig: "./tsconfig.json",
+      }),
       terser(),
     ],
     external: ["boxicons", "react", "react-dom"],
   },
   {
-    input: "src/index.ts",
-    output: [{file: "dist/types.d.ts", format: "es"}],
+    input: "dist/esm/types/index.d.ts",
+    output: [{file: "dist/index.d.ts", format: "esm"}],
+    external: [/\.css$/],
     plugins: [dts()],
   },
 ];
