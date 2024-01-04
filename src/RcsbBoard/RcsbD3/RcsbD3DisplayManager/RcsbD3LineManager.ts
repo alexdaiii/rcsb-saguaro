@@ -1,7 +1,8 @@
-import { Selection } from "d3-selection";
-import { Line } from "d3-shape";
-import { RcsbD3Constants } from "../RcsbD3Constants";
-import { RcsbFvTrackDataElementInterface } from "../../../RcsbDataManager/RcsbDataManager";
+import {Selection} from "d3-selection";
+import {Line} from "d3-shape";
+
+import {RcsbFvTrackDataElementInterface} from "../../../RcsbDataManager/RcsbDataManager";
+import {RcsbD3Constants} from "../RcsbD3Constants";
 
 export interface PlotLineInterface {
   points: RcsbFvTrackDataElementInterface[];

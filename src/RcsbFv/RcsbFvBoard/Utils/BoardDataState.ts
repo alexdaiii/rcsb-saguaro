@@ -1,9 +1,13 @@
+import {arrayMoveMutable} from "array-move";
+import {Subscription} from "rxjs";
+import uniqid from "uniqid";
+
 import {
   RcsbFvDisplayConfigInterface,
-  RcsbFvRowExtendedConfigInterface,
   RcsbFvRowConfigInterface,
+  RcsbFvRowExtendedConfigInterface,
 } from "../../RcsbFvConfig/RcsbFvConfigInterface";
-import uniqid from "uniqid";
+import {RcsbFvDisplayTypes} from "../../RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
   EventType,
   RcsbFvContextManager,
@@ -11,26 +15,23 @@ import {
   TrackDataInterface,
   TrackVisibilityInterface,
 } from "../../RcsbFvContextManager/RcsbFvContextManager";
-import { RcsbFvDisplayTypes } from "../../RcsbFvConfig/RcsbFvDefaultConfigValues";
-import { arrayMoveMutable } from "array-move";
-import { RowStatusMap } from "./RowStatusMap";
-import { Subscription } from "rxjs";
+import {RowStatusMap} from "./RowStatusMap";
 
 export interface RcsbFvRowRenderConfigInterface<
-  P extends { [k: string]: any } = {},
-  S extends { [k: string]: any } = {},
-  R extends { [k: string]: any } = {},
-  M extends { [k: string]: any } = {},
+  P extends {[k: string]: any} = {},
+  S extends {[k: string]: any} = {},
+  R extends {[k: string]: any} = {},
+  M extends {[k: string]: any} = {},
 > extends RcsbFvRowExtendedConfigInterface<P, S, R, M> {
   key: string;
   renderSchedule?: "async" | "sync" | "fixed";
 }
 
 export class BoardDataState<
-  P extends { [k: string]: any } = {},
-  S extends { [k: string]: any } = {},
-  R extends { [k: string]: any } = {},
-  M extends { [k: string]: any } = {},
+  P extends {[k: string]: any} = {},
+  S extends {[k: string]: any} = {},
+  R extends {[k: string]: any} = {},
+  M extends {[k: string]: any} = {},
 > {
   private rowConfigData: RcsbFvRowRenderConfigInterface<P, S, R, M>[] = [];
   private readonly rowStatusMap: RowStatusMap = new RowStatusMap();
@@ -88,7 +89,7 @@ export class BoardDataState<
     row.renderSchedule = "sync";
   }
 
-  public moveTrack(move: { oldIndex: number; newIndex: number }): void {
+  public moveTrack(move: {oldIndex: number; newIndex: number}): void {
     arrayMoveMutable(this.rowConfigData, move.oldIndex, move.newIndex);
   }
 
@@ -111,7 +112,7 @@ export class BoardDataState<
    * */
   public resetTrack(trackId: string): void {
     const row = this.rowConfigData.find(
-      (r) => r.trackId === this.uniqueTrackId({ trackId }),
+      (r) => r.trackId === this.uniqueTrackId({trackId}),
     );
     if (!row) return;
     row.key = generateKey(row.trackId);
@@ -203,7 +204,7 @@ export class BoardDataState<
     });
   }
 
-  private uniqueTrackId(d: { trackId: string }): string {
+  private uniqueTrackId(d: {trackId: string}): string {
     const trackId = d.trackId ?? uniqid("trackId_");
     return `${trackId}_${this.boardId}`;
   }

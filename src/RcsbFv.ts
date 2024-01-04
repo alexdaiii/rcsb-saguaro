@@ -1,4 +1,4 @@
-export { RcsbFv, RcsbFvInterface } from "./RcsbFv/RcsbFv";
+export {RcsbFv, RcsbFvInterface} from "./RcsbFv/RcsbFv";
 export {
   RcsbFvBoardConfigInterface,
   RcsbFvDisplayConfigInterface,
@@ -15,5 +15,7 @@ export {
   RcsbFvDisplayTypes,
   InterpolationTypes,
 } from "./RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
-export { LocationViewInterface as RcsbFvLocationViewInterface } from "./RcsbBoard/RcsbBoard";
-export { RowTitleComponentType } from "./RcsbFv/RcsbFvRow/RcsbFvRowTitle";
+export {LocationViewInterface as RcsbFvLocationViewInterface} from "./RcsbBoard/RcsbBoard";
+export {RowTitleComponentType} from "./RcsbFv/RcsbFvRow/RcsbFvRowTitle";
+
+export class RcsbFvRowConfigInterface {}

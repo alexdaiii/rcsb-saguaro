@@ -1,13 +1,14 @@
 import React from "react";
-import { RcsbFvDOMConstants } from "../../RcsbFvConfig/RcsbFvDOMConstants";
+import {Subscription} from "rxjs";
+
 import classes from "../../../scss/RcsbFvRow.module.scss";
-import { RcsbFvDefaultConfigValues } from "../../RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {RcsbFvBoardConfigInterface} from "../../RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvDOMConstants} from "../../RcsbFvConfig/RcsbFvDOMConstants";
+import {RcsbFvDefaultConfigValues} from "../../RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
   EventType,
   RcsbFvContextManager,
 } from "../../RcsbFvContextManager/RcsbFvContextManager";
-import { Subscription } from "rxjs";
-import { RcsbFvBoardConfigInterface } from "../../RcsbFvConfig/RcsbFvConfigInterface";
 
 interface RowGlowInterface {
   readonly boardId: string;

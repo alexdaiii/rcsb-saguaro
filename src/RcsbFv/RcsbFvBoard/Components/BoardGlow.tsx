@@ -1,9 +1,10 @@
 import React from "react";
-import { RcsbFvDOMConstants } from "../../RcsbFvConfig/RcsbFvDOMConstants";
+import {Subscription, asyncScheduler} from "rxjs";
+
 import classes from "../../../scss/RcsbFvRow.module.scss";
-import { asyncScheduler, Subscription } from "rxjs";
-import { RcsbFvDefaultConfigValues } from "../../RcsbFvConfig/RcsbFvDefaultConfigValues";
-import { RcsbFvBoardConfigInterface } from "../../RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvBoardConfigInterface} from "../../RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvDOMConstants} from "../../RcsbFvConfig/RcsbFvDOMConstants";
+import {RcsbFvDefaultConfigValues} from "../../RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
   EventType,
   RcsbFvContextManager,

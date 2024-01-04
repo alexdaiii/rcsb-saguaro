@@ -1,6 +1,7 @@
-import { Subject, Subscription } from "rxjs";
-import { RcsbFvTrackData } from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbFvBoardFullConfigInterface } from "../RcsbFvBoard/RcsbFvBoard";
+import {Subject, Subscription} from "rxjs";
+
+import {RcsbFvTrackData} from "../../RcsbDataManager/RcsbDataManager";
+import {RcsbFvBoardFullConfigInterface} from "../RcsbFvBoard/RcsbFvBoard";
 
 /**rxjs Event Handler Object. It allows objects to subscribe methods and then, get(send) events to(from) other objects*/
 export class RcsbFvContextManager {
@@ -77,8 +78,8 @@ export interface DomainViewInterface {
 
 export interface SetSelectionInterface {
   elements:
-    | Array<{ begin: number; end?: number; isEmpty?: boolean }>
-    | { begin: number; end?: number; isEmpty?: boolean }
+    | Array<{begin: number; end?: number; isEmpty?: boolean}>
+    | {begin: number; end?: number; isEmpty?: boolean}
     | null;
   mode: "select" | "hover";
 }

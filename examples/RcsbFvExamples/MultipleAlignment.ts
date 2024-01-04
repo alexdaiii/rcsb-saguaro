@@ -1,6 +1,6 @@
-import { RcsbFvRowConfigInterface } from "../RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
-import { RcsbFvDisplayTypes } from "../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
-import { RcsbFv } from "../RcsbFv/RcsbFv";
+import {RcsbFv} from "../../src";
+import {RcsbFvDisplayTypes} from "../../src";
+import {RcsbFvRowConfigInterface} from "../../src/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 
 const sequence =
   "MTTQAPTFTQPLQSVVVLEGSTATFEAHISGFPVPEVSWFRDGQVISTSTLPGVQISFSD" +

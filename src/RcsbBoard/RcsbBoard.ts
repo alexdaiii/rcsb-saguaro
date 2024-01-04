@@ -1,5 +1,18 @@
-import { zoom, ZoomBehavior, zoomIdentity, ZoomTransform } from "d3-zoom";
+import {D3ZoomEvent} from "d3";
+import {ZoomBehavior, ZoomTransform, zoom, zoomIdentity} from "d3-zoom";
+import {Subject, Subscription, asyncScheduler} from "rxjs";
 
+import {RcsbFvTrackDataElementInterface} from "../RcsbDataManager/RcsbDataManager";
+import {RcsbFvDefaultConfigValues} from "../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {
+  CONDITIONAL_FLAG,
+  EventType,
+  RcsbFvContextManager,
+  RcsbFvContextManagerType,
+} from "../RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
+import classes from "../scss/RcsbBoard.module.scss";
+import {MOUSE} from "./RcsbD3/RcsbD3Constants";
+import {RcsbD3EventDispatcher} from "./RcsbD3/RcsbD3EventDispatcher";
 import {
   MainGConfInterface,
   PaneConfInterface,
@@ -7,27 +20,13 @@ import {
   SVGConfInterface,
   ZoomConfigInterface,
 } from "./RcsbD3/RcsbD3Manager";
-
-import classes from "../scss/RcsbBoard.module.scss";
-import { MOUSE } from "./RcsbD3/RcsbD3Constants";
-import {
-  CONDITIONAL_FLAG,
-  EventType,
-  RcsbFvContextManager,
-  RcsbFvContextManagerType,
-} from "../RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
+import {RcsbScaleInterface} from "./RcsbD3/RcsbD3ScaleFactory";
 import {
   RcsbDisplayInterface,
   RcsbTrackInterface,
 } from "./RcsbDisplay/RcsbDisplayInterface";
-import { RcsbD3EventDispatcher } from "./RcsbD3/RcsbD3EventDispatcher";
-import { RcsbFvTrackDataElementInterface } from "../RcsbDataManager/RcsbDataManager";
-import { RcsbFvDefaultConfigValues } from "../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
-import { RcsbSelection } from "./RcsbSelection";
-import { asyncScheduler, Subject, Subscription } from "rxjs";
-import { RcsbScaleInterface } from "./RcsbD3/RcsbD3ScaleFactory";
-import { D3ZoomEvent } from "d3";
-import { RcsbWindowEventManager } from "./RcsbWindowEventManager";
+import {RcsbSelection} from "./RcsbSelection";
+import {RcsbWindowEventManager} from "./RcsbWindowEventManager";
 
 export interface LocationViewInterface {
   from: number;
@@ -74,7 +73,7 @@ export class RcsbBoard {
   private zoomEventHandler: ZoomBehavior<Element, any> = zoom();
 
   private readonly boardSubject: RcsbTrackInterface["trackSubject"] = {
-    mousemove: new Subject<{ e: MouseEvent; n: number }>(),
+    mousemove: new Subject<{e: MouseEvent; n: number}>(),
     mouseenter: new Subject<MouseEvent>(),
     mouseleave: new Subject<MouseEvent>(),
   };
@@ -180,18 +179,18 @@ export class RcsbBoard {
   public setElementClickCallback(
     f: (d?: RcsbFvTrackDataElementInterface, e?: MouseEvent) => void,
   ) {
-    this.elementClickSubject.subscribe(({ d, e }) => f(d, e));
+    this.elementClickSubject.subscribe(({d, e}) => f(d, e));
   }
 
   public setHighlightHoverPosition() {
-    this.boardSubject.mousemove.subscribe((d: { e: MouseEvent; n: number }) => {
+    this.boardSubject.mousemove.subscribe((d: {e: MouseEvent; n: number}) => {
       if (
         this.contextManager.getCondition(
           CONDITIONAL_FLAG.STOP_MOUSE_MOVE_HOVERING_HIGHLIGHT,
         )
       )
         return;
-      this.highlightRegion({ begin: d.n, nonSpecific: true }, "set", "hover");
+      this.highlightRegion({begin: d.n, nonSpecific: true}, "set", "hover");
     });
   }
 
@@ -232,12 +231,12 @@ export class RcsbBoard {
     if (d != null) {
       if (operation === "set")
         this.selection.setSelected(
-          { rcsbFvTrackDataElement: d, domId: this.domId },
+          {rcsbFvTrackDataElement: d, domId: this.domId},
           mode,
         );
       else if (operation === "add" || operation === "replace-last")
         this.selection.addSelected(
-          { rcsbFvTrackDataElement: d, domId: this.domId },
+          {rcsbFvTrackDataElement: d, domId: this.domId},
           mode,
           operation === "replace-last",
         );
@@ -266,7 +265,7 @@ export class RcsbBoard {
         track.highlightRegion(
           this.selection.getSelected(mode).map((d) => d.rcsbFvTrackDataElement),
           mode === "hover"
-            ? { color: "#FFCCCC", rectClass: classes.rcsbHoverRect }
+            ? {color: "#FFCCCC", rectClass: classes.rcsbHoverRect}
             : undefined,
         );
       });
@@ -275,7 +274,7 @@ export class RcsbBoard {
         track.highlightRegion(
           null,
           mode === "hover"
-            ? { color: "#FFCCCC", rectClass: classes.rcsbHoverRect }
+            ? {color: "#FFCCCC", rectClass: classes.rcsbHoverRect}
             : undefined,
         );
       });

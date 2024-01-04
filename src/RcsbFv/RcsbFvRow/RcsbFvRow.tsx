@@ -1,22 +1,23 @@
 import React from "react";
+import {CSSTransition} from "react-transition-group";
+import {Subscription} from "rxjs";
+
+import {RcsbScaleInterface} from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbSelection} from "../../RcsbBoard/RcsbSelection";
+import classes from "../../scss/RcsbFvRow.module.scss";
+import {RcsbFvRowExtendedConfigInterface} from "../RcsbFvConfig/RcsbFvConfigInterface";
 import {
   RcsbFvDefaultConfigValues,
   RcsbFvDisplayTypes,
 } from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
-import { RcsbFvRowTitle } from "./RcsbFvRowTitle";
-import { RcsbFvRowTrack } from "./RcsbFvRowTrack";
-import { RcsbFvRowExtendedConfigInterface } from "../RcsbFvConfig/RcsbFvConfigInterface";
-import classes from "../../scss/RcsbFvRow.module.scss";
 import {
   EventType,
   RcsbFvContextManager,
   RcsbFvContextManagerType,
   TrackVisibilityInterface,
 } from "../RcsbFvContextManager/RcsbFvContextManager";
-import { RcsbSelection } from "../../RcsbBoard/RcsbSelection";
-import { Subscription } from "rxjs";
-import { CSSTransition } from "react-transition-group";
-import { RcsbScaleInterface } from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbFvRowTitle} from "./RcsbFvRowTitle";
+import {RcsbFvRowTrack} from "./RcsbFvRowTrack";
 
 /**Board track React component interface*/
 interface RcsbFvRowInterface {
@@ -150,7 +151,7 @@ export class RcsbFvRow extends React.Component<
 
   private hoverRow(flag: boolean): void {
     if (!this.props.rowConfigData.hideRowGlow) {
-      this.setState(() => ({ titleGlow: flag }));
+      this.setState(() => ({titleGlow: flag}));
       this.props.contextManager.next({
         eventType: EventType.ROW_HOVER,
         eventData:
@@ -164,12 +165,12 @@ export class RcsbFvRow extends React.Component<
 
   private checkHoveredRow(trackId: string) {
     if (trackId != this.props.id && this.state.titleGlow) {
-      this.setState(() => ({ titleGlow: false }));
+      this.setState(() => ({titleGlow: false}));
     }
   }
 
   private changeClass(display: boolean): void {
-    this.setState({ display: display });
+    this.setState({display: display});
   }
 
   /**This function will be called once the final height of the track is known*/

@@ -1,16 +1,17 @@
 import React from "react";
-import { RcsbFvRow } from "../../RcsbFvRow/RcsbFvRow";
-import { RowConfigFactory } from "../Utils/RowConfigFactory";
-import { RcsbFvContextManager } from "../../RcsbFvContextManager/RcsbFvContextManager";
-import { RcsbScaleInterface } from "../../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
-import { RcsbSelection } from "../../../RcsbBoard/RcsbSelection";
+import {ReactNode} from "react";
+import uniqid from "uniqid";
+
+import {RcsbScaleInterface} from "../../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbSelection} from "../../../RcsbBoard/RcsbSelection";
 import {
   RcsbFvBoardConfigInterface,
   RcsbFvRowExtendedConfigInterface,
 } from "../../RcsbFvConfig/RcsbFvConfigInterface";
-import { RcsbFvDisplayTypes } from "../../RcsbFvConfig/RcsbFvDefaultConfigValues";
-import uniqid from "uniqid";
-import { ReactNode } from "react";
+import {RcsbFvDisplayTypes} from "../../RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {RcsbFvContextManager} from "../../RcsbFvContextManager/RcsbFvContextManager";
+import {RcsbFvRow} from "../../RcsbFvRow/RcsbFvRow";
+import {RowConfigFactory} from "../Utils/RowConfigFactory";
 
 interface AxisRowInterface {
   readonly boardId: string;
@@ -22,7 +23,7 @@ interface AxisRowInterface {
 
 export class AxisRow extends React.Component<
   AxisRowInterface,
-  { axisKey: string }
+  {axisKey: string}
 > {
   render(): ReactNode {
     const rowId: string = uniqid("rcsbFvAxis_");
@@ -54,7 +55,7 @@ export class AxisRow extends React.Component<
 
   shouldComponentUpdate(
     nextProps: Readonly<AxisRowInterface>,
-    nextState: Readonly<{ axisKey: string }>,
+    nextState: Readonly<{axisKey: string}>,
     nextContext: any,
   ): boolean {
     return (

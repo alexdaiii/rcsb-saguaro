@@ -1,9 +1,9 @@
+import {RcsbFv} from "../../src";
+import {RcsbFvDisplayTypes} from "../../src";
 import {
   RcsbFvBoardConfigInterface,
   RcsbFvRowConfigInterface,
-} from "../RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
-import { RcsbFv } from "../RcsbFv/RcsbFv";
-import { RcsbFvDisplayTypes } from "../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+} from "../../src/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
 
 const sequence =
   "MTTQAPTFTQPLQSVVVLEGSTATFEAHISGFPVPEVSWFRDGQVISTSTLPGVQISFSD" +
@@ -227,7 +227,7 @@ setTimeout(async ()=>{
 },2000)
 console.log(fv.getBoardData().map(d=>d.metadata));*/
 
-const fv2 = new RcsbFv({ elementId: "pfvBis", boardConfigData, rowConfigData });
+const fv2 = new RcsbFv({elementId: "pfvBis", boardConfigData, rowConfigData});
 fv2.then(() => {
   console.log("Ready viewer");
 });

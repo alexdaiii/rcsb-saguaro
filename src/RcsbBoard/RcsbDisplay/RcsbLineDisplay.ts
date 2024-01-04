@@ -1,28 +1,29 @@
-import { RcsbAbstractDisplay } from "./RcsbAbstractDisplay";
+import {largestTriangleOneBucket} from "@d3fc/d3fc-sample";
+import {
+  Line,
+  curveBasis,
+  curveCardinal,
+  curveLinear,
+  curveStep,
+  line,
+} from "d3-shape";
+
+import {
+  RcsbFvTrackData,
+  RcsbFvTrackDataElementInterface,
+} from "../../RcsbDataManager/RcsbDataManager";
+import {InterpolationTypes} from "../../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {LocationViewInterface} from "../RcsbBoard";
 import {
   MoveLineInterface,
   PlotLineInterface,
   RcsbD3LineManager,
 } from "../RcsbD3/RcsbD3DisplayManager/RcsbD3LineManager";
 import {
-  line,
-  Line,
-  curveStep,
-  curveCardinal,
-  curveBasis,
-  curveLinear,
-} from "d3-shape";
-import { largestTriangleOneBucket } from "@d3fc/d3fc-sample";
-import { InterpolationTypes } from "../../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
-import {
-  RcsbFvTrackData,
-  RcsbFvTrackDataElementInterface,
-} from "../../RcsbDataManager/RcsbDataManager";
-import {
   RcsbD3ScaleFactory,
   RcsbScaleInterface,
 } from "../RcsbD3/RcsbD3ScaleFactory";
-import { LocationViewInterface } from "../RcsbBoard";
+import {RcsbAbstractDisplay} from "./RcsbAbstractDisplay";
 
 export class RcsbLineDisplay extends RcsbAbstractDisplay {
   private _yDomain: [number, number];
@@ -127,7 +128,7 @@ export class RcsbLineDisplay extends RcsbAbstractDisplay {
   ): RcsbFvTrackDataElementInterface[] {
     let out: RcsbFvTrackDataElementInterface[] = [];
     const tmp: RcsbFvTrackDataElementInterface[] = [];
-    const domain: { min: number; max: number } = {
+    const domain: {min: number; max: number} = {
       min: Number.MAX_SAFE_INTEGER,
       max: Number.MIN_SAFE_INTEGER,
     };
@@ -139,7 +140,7 @@ export class RcsbLineDisplay extends RcsbAbstractDisplay {
     domain.max = Math.min(domain.max, this.xScale.domain()[1]);
     const thr = this.maxPoints;
     for (let n = Math.ceil(domain.min); n < domain.max; n++) {
-      tmp[n] = { begin: n, value: 0 };
+      tmp[n] = {begin: n, value: 0};
     }
     points.forEach((p) => {
       if (p.begin > domain.min && p.begin < domain.max) {
@@ -159,10 +160,10 @@ export class RcsbLineDisplay extends RcsbAbstractDisplay {
         out.push(p);
       this.innerData[p.begin] = p;
     });
-    out.unshift({ begin: domain.min, value: 0 });
-    out.unshift({ begin: this.xScale.domain()[0], value: 0 });
-    out.push({ begin: domain.max, value: 0 });
-    out.push({ begin: this.xScale.domain()[1], value: 0 });
+    out.unshift({begin: domain.min, value: 0});
+    out.unshift({begin: this.xScale.domain()[0], value: 0});
+    out.push({begin: domain.max, value: 0});
+    out.push({begin: this.xScale.domain()[1], value: 0});
     if (out.length > thr) {
       const bucketSize = out.length / thr;
       const sampler = largestTriangleOneBucket();

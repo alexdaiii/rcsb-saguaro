@@ -1,6 +1,7 @@
 import React from "react";
+import {ReactNode} from "react";
+
 import classes from "../../scss/RcsbFvRow.module.scss";
-import { ReactNode } from "react";
 
 export interface RcsbFvRowMarkInterface<T>
   extends RcsbFvRowMarkPublicInterface<T> {
@@ -26,10 +27,7 @@ export class RcsbFvRowMark<T> extends React.Component<
 > {
   public render(): ReactNode {
     return (
-      <div
-        className={classes.rcsbFvRowMark}
-        style={{ display: "inline-block" }}
-      >
+      <div className={classes.rcsbFvRowMark} style={{display: "inline-block"}}>
         <div>
           {this.props.externalRowMark ? (
             <this.props.externalRowMark.component
@@ -42,7 +40,7 @@ export class RcsbFvRowMark<T> extends React.Component<
             <div
               onClick={this.props.clickCallback}
               onMouseOver={this.props.hoverCallback}
-              style={{ width: 6, height: 6, marginBottom: 4, marginRight: 5 }}
+              style={{width: 6, height: 6, marginBottom: 4, marginRight: 5}}
             >
               <div className={classes.rcsbFvRowMarkComponent} />
             </div>

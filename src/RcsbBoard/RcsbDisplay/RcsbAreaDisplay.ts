@@ -1,30 +1,31 @@
-import { RcsbLineDisplay } from "./RcsbLineDisplay";
+import {largestTriangleOneBucket} from "@d3fc/d3fc-sample";
+import {ContainerElement, pointer} from "d3-selection";
 import {
-  area,
   Area,
-  curveStep,
-  curveCardinal,
+  area,
   curveBasis,
+  curveCardinal,
   curveLinear,
+  curveStep,
 } from "d3-shape";
-import { InterpolationTypes } from "../../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+
+import {
+  RcsbFvColorGradient,
+  RcsbFvTrackData,
+  RcsbFvTrackDataElementInterface,
+} from "../../RcsbDataManager/RcsbDataManager";
+import {InterpolationTypes} from "../../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
   MoveAreaInterface,
   PlotAreaInterface,
   RcsbD3AreaManager,
 } from "../RcsbD3/RcsbD3DisplayManager/RcsbD3AreaManager";
 import {
-  RcsbFvColorGradient,
-  RcsbFvTrackData,
-  RcsbFvTrackDataElementInterface,
-} from "../../RcsbDataManager/RcsbDataManager";
-import { largestTriangleOneBucket } from "@d3fc/d3fc-sample";
-import {
   MoveLineInterface,
   PlotLineInterface,
   RcsbD3LineManager,
 } from "../RcsbD3/RcsbD3DisplayManager/RcsbD3LineManager";
-import { ContainerElement, pointer } from "d3-selection";
+import {RcsbLineDisplay} from "./RcsbLineDisplay";
 
 interface LineColorInterface {
   points: RcsbFvTrackDataElementInterface[];
@@ -45,7 +46,7 @@ export class RcsbAreaDisplay extends RcsbLineDisplay {
 
   constructor(boardId: string, trackId: string) {
     super(boardId, trackId);
-    this.trackSubject.mousemove.subscribe(({ e, n }) => this.mousemove(e, n));
+    this.trackSubject.mousemove.subscribe(({e, n}) => this.mousemove(e, n));
     this.trackSubject.mouseleave.subscribe((e) => this.mouseleave(e));
   }
 
@@ -102,7 +103,7 @@ export class RcsbAreaDisplay extends RcsbLineDisplay {
           e: event,
         });
       } else if (n > 0) {
-        this.elementSubject.mouseenter.next({ d: { begin: n }, e: event });
+        this.elementSubject.mouseenter.next({d: {begin: n}, e: event});
       } else {
         this.mouseleave(event);
       }
@@ -110,7 +111,7 @@ export class RcsbAreaDisplay extends RcsbLineDisplay {
   }
 
   private mouseleave(event: MouseEvent) {
-    this.elementSubject.mouseleave.next({ d: { begin: 0 }, e: event });
+    this.elementSubject.mouseleave.next({d: {begin: 0}, e: event});
   }
 
   private mouseclick = (event: MouseEvent) => {
@@ -128,7 +129,7 @@ export class RcsbAreaDisplay extends RcsbLineDisplay {
         "select",
         false,
       );
-      this.elementSubject.mouseclick.next({ d: region, e: event });
+      this.elementSubject.mouseclick.next({d: region, e: event});
     }
   };
 
@@ -140,7 +141,7 @@ export class RcsbAreaDisplay extends RcsbLineDisplay {
 
     if (typeof this._displayColor === "string") {
       this.multiLine = [
-        { points: this.downSampling(data), color: this._displayColor },
+        {points: this.downSampling(data), color: this._displayColor},
       ];
     } else if (typeof this._displayColor === "object") {
       this.multiLine = this.downSamplingSplit(
@@ -212,12 +213,12 @@ export class RcsbAreaDisplay extends RcsbLineDisplay {
 
   private downSamplingSplit(
     points: RcsbFvTrackDataElementInterface[],
-    gradient: { thresholds: Array<number>; colors: Array<string> },
+    gradient: {thresholds: Array<number>; colors: Array<string>},
   ): Array<LineColorInterface> {
     const tmp: Array<LineColorInterface> = new Array<LineColorInterface>();
     const lineColorArray: Array<LineColorInterface> =
       new Array<LineColorInterface>();
-    const domain: { min: number; max: number } = {
+    const domain: {min: number; max: number} = {
       min: Number.MAX_SAFE_INTEGER,
       max: Number.MIN_SAFE_INTEGER,
     };
@@ -237,7 +238,7 @@ export class RcsbAreaDisplay extends RcsbLineDisplay {
     for (let n = Math.ceil(domain.min); n < domain.max; n++) {
       this.innerData.push(null);
       gradient.colors.forEach((c, i) => {
-        tmp[i].points[n] = { begin: n, value: 0, values: [0, 0] };
+        tmp[i].points[n] = {begin: n, value: 0, values: [0, 0]};
       });
     }
     points.forEach((p) => {
@@ -257,7 +258,7 @@ export class RcsbAreaDisplay extends RcsbLineDisplay {
             gradient.thresholds,
           );
           tmp[thrIndex].points[p.begin] = this.blockAreaFlag
-            ? { ...p, value: 1 }
+            ? {...p, value: 1}
             : p;
         }
       }
@@ -277,10 +278,10 @@ export class RcsbAreaDisplay extends RcsbLineDisplay {
         )
           out.push(p);
       });
-      out.unshift({ begin: domain.min, value: 0, values: [0, 0] });
-      out.unshift({ begin: this.xScale.domain()[0], value: 0, values: [0, 0] });
-      out.push({ begin: domain.max, value: 0, values: [0, 0] });
-      out.push({ begin: this.xScale.domain()[1], value: 0, values: [0, 0] });
+      out.unshift({begin: domain.min, value: 0, values: [0, 0]});
+      out.unshift({begin: this.xScale.domain()[0], value: 0, values: [0, 0]});
+      out.push({begin: domain.max, value: 0, values: [0, 0]});
+      out.push({begin: this.xScale.domain()[1], value: 0, values: [0, 0]});
       if (out.length > thr) {
         const bucketSize = out.length / thr;
         const sampler = largestTriangleOneBucket();
@@ -316,7 +317,7 @@ function buildColorThreshold(displayColor: RcsbFvColorGradient): {
   colors: Array<string>;
 } {
   if (displayColor.colors instanceof Array)
-    return { thresholds: displayColor.thresholds, colors: displayColor.colors };
+    return {thresholds: displayColor.thresholds, colors: displayColor.colors};
   return {
     thresholds: displayColor.thresholds,
     colors: Array(displayColor.thresholds.length + 1).fill(displayColor.colors),

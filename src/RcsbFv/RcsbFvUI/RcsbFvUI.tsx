@@ -1,24 +1,25 @@
+import {computePosition, detectOverflow} from "@floating-ui/dom";
+import BxLeft from "boxicons/svg/regular/bx-left-arrow.svg";
+import BxMinus from "boxicons/svg/regular/bx-minus.svg";
+import BxPlus from "boxicons/svg/regular/bx-plus.svg";
+import BxRight from "boxicons/svg/regular/bx-right-arrow.svg";
+import BxDown from "boxicons/svg/solid/bxs-down-arrow.svg";
 import React from "react";
+import {ReactNode} from "react";
+import {CSSTransition} from "react-transition-group";
+import {Subscription, asyncScheduler} from "rxjs";
+
+import {RcsbScaleInterface} from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
 import classes from "../../scss/RcsbFvRow.module.scss";
-import { RcsbFvDOMConstants } from "../RcsbFvConfig/RcsbFvDOMConstants";
-import { CSSTransition } from "react-transition-group";
-import { RcsbFvBoardConfigInterface } from "../RcsbFvConfig/RcsbFvConfigInterface";
-import { RcsbFvDefaultConfigValues } from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {RcsbFvBoardConfigInterface} from "../RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvDOMConstants} from "../RcsbFvConfig/RcsbFvDOMConstants";
+import {RcsbFvDefaultConfigValues} from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
   DomainViewInterface,
   EventType,
   RcsbFvContextManager,
   RcsbFvContextManagerType,
 } from "../RcsbFvContextManager/RcsbFvContextManager";
-import { asyncScheduler, Subscription } from "rxjs";
-import { RcsbScaleInterface } from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
-import { computePosition, detectOverflow } from "@floating-ui/dom";
-import { ReactNode } from "react";
-import BxPlus from "boxicons/svg/regular/bx-plus.svg";
-import BxMinus from "boxicons/svg/regular/bx-minus.svg";
-import BxRight from "boxicons/svg/regular/bx-right-arrow.svg";
-import BxLeft from "boxicons/svg/regular/bx-left-arrow.svg";
-import BxDown from "boxicons/svg/solid/bxs-down-arrow.svg";
 
 export interface RcsbFvUIConfigInterface {
   readonly boardId: string;
@@ -86,20 +87,20 @@ export class RcsbFvUI extends React.Component<
       <div
         id={this.props.boardId + RcsbFvDOMConstants.UI_DOM_ID_PREFIX}
         className={classes.rcsbUI + " " + classes.rcsbSmoothDivHide}
-        style={{ position: "absolute", top: 0, left: 0 }}
+        style={{position: "absolute", top: 0, left: 0}}
       >
-        <div style={{ position: "relative" }}>
+        <div style={{position: "relative"}}>
           <CSSTransition
             in={this.state.collapse}
             timeout={300}
             classNames={classes.rcsbCollapseUI}
           >
             <div
-              style={{ position: "absolute" }}
+              style={{position: "absolute"}}
               className={
                 classes.rcsbCollapsedUIDiv + " " + classes.rcsbCollapseUI
               }
-              onMouseEnter={this.changeState.bind(this, { collapse: false })}
+              onMouseEnter={this.changeState.bind(this, {collapse: false})}
             >
               <div className={classes.rcsbCollapsedIcon}>
                 <BxDown {...RcsbFvUI.ICON_PROPS} />
@@ -112,9 +113,9 @@ export class RcsbFvUI extends React.Component<
             classNames={classes.rcsbExpandUI}
           >
             <div
-              style={{ position: "absolute" }}
+              style={{position: "absolute"}}
               className={classes.rcsbExpandUI}
-              onMouseLeave={this.changeState.bind(this, { collapse: true })}
+              onMouseLeave={this.changeState.bind(this, {collapse: true})}
             >
               {this.config.map((button) => {
                 return this.buildButton(button);
@@ -179,12 +180,12 @@ export class RcsbFvUI extends React.Component<
               rootBoundary: "viewport",
             });
             if (overflow.top > offsetHeight)
-              return { y: overflow.top + middlewareArguments.y - offsetHeight };
+              return {y: overflow.top + middlewareArguments.y - offsetHeight};
             return {};
           },
         },
       ],
-    }).then(({ x, y }) => {
+    }).then(({x, y}) => {
       Object.assign(this.tooltipDiv.style, {
         left: `${x}px`,
         top: `${y + offsetHeight}px`,
@@ -236,7 +237,7 @@ export class RcsbFvUI extends React.Component<
     );
     const x: number = currentDomain[0] + deltaZoom;
     const y: number = currentDomain[1] - deltaZoom;
-    if (y - x > 20) this.setDomain({ domain: [x, y] });
+    if (y - x > 20) this.setDomain({domain: [x, y]});
   }
 
   private zoomOut(): void {
@@ -265,7 +266,7 @@ export class RcsbFvUI extends React.Component<
         ? currentDomain[1] + deltaZoom
         : max + RcsbFvDefaultConfigValues.increasedView;
     if (y - x < max + RcsbFvDefaultConfigValues.increasedView)
-      this.setDomain({ domain: [x, y] });
+      this.setDomain({domain: [x, y]});
     else
       this.setDomain({
         domain: [
@@ -306,7 +307,7 @@ export class RcsbFvUI extends React.Component<
     const x: number = currentDomain[0] + direction * deltaZoom;
     const y: number = currentDomain[1] + direction * deltaZoom;
     if (y - x < max + RcsbFvDefaultConfigValues.increasedView)
-      this.setDomain({ domain: [x, y] });
+      this.setDomain({domain: [x, y]});
     else
       this.setDomain({
         domain: [

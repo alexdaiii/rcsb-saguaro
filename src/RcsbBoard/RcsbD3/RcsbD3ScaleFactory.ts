@@ -1,4 +1,4 @@
-import { scaleLinear, ScaleLinear, scalePoint, ScalePoint } from "d3-scale";
+import {ScaleLinear, ScalePoint, scaleLinear, scalePoint} from "d3-scale";
 
 export interface RcsbScaleInterface<
   T = number,

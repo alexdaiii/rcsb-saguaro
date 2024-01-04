@@ -1,17 +1,18 @@
-import { RcsbAbstractTrack } from "./RcsbAbstractTrack";
-import classes from "../../scss/RcsbBoard.module.scss";
-import { Selection, BaseType, select } from "d3-selection";
-import { LocationViewInterface } from "../RcsbBoard";
+import {BaseType, Selection, select} from "d3-selection";
+import {Subject} from "rxjs";
+
 import {
   RcsbFvColorGradient,
   RcsbFvTrackData,
   RcsbFvTrackDataElementInterface,
 } from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbD3EventDispatcher } from "../RcsbD3/RcsbD3EventDispatcher";
-import { RcsbD3Constants } from "../RcsbD3/RcsbD3Constants";
-import { EventType } from "../../RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
-import { RcsbDisplayInterface } from "./RcsbDisplayInterface";
-import { Subject } from "rxjs";
+import {EventType} from "../../RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
+import classes from "../../scss/RcsbBoard.module.scss";
+import {LocationViewInterface} from "../RcsbBoard";
+import {RcsbD3Constants} from "../RcsbD3/RcsbD3Constants";
+import {RcsbD3EventDispatcher} from "../RcsbD3/RcsbD3EventDispatcher";
+import {RcsbAbstractTrack} from "./RcsbAbstractTrack";
+import {RcsbDisplayInterface} from "./RcsbDisplayInterface";
 
 export abstract class RcsbAbstractDisplay
   extends RcsbAbstractTrack
@@ -67,8 +68,8 @@ export abstract class RcsbAbstractDisplay
     enter: (d: RcsbFvTrackDataElementInterface) => void;
     leave: (d: RcsbFvTrackDataElementInterface) => void;
   }) {
-    this.elementSubject.mouseenter.subscribe(({ d, e }) => action.enter(d));
-    this.elementSubject.mouseleave.subscribe(({ d, e }) => action.leave(d));
+    this.elementSubject.mouseenter.subscribe(({d, e}) => action.enter(d));
+    this.elementSubject.mouseleave.subscribe(({d, e}) => action.leave(d));
   }
 
   plot(
@@ -84,7 +85,7 @@ export abstract class RcsbAbstractDisplay
       (event: MouseEvent, d: RcsbFvTrackDataElementInterface) => {
         if (event.defaultPrevented) return;
 
-        this.elementSubject.mouseclick.next({ d, e: event });
+        this.elementSubject.mouseclick.next({d, e: event});
         d.elementClickCallback?.(d, event);
         RcsbD3EventDispatcher.elementClick(event, this.getBoardHighlight(), d);
       },
@@ -94,7 +95,7 @@ export abstract class RcsbAbstractDisplay
       (event: MouseEvent, d: RcsbFvTrackDataElementInterface) => {
         if (event.defaultPrevented) return;
 
-        this.elementSubject.mouseenter.next({ d, e: event });
+        this.elementSubject.mouseenter.next({d, e: event});
       },
     );
     element.on(
@@ -109,7 +110,7 @@ export abstract class RcsbAbstractDisplay
         if (event.defaultPrevented) {
           return;
         }
-        this.elementSubject.mouseleave.next({ d, e: event });
+        this.elementSubject.mouseleave.next({d, e: event});
       },
     );
   }
@@ -156,13 +157,13 @@ export abstract class RcsbAbstractDisplay
         if (dataElems.length == 0 && !this.hidden) {
           this.contextManager.next({
             eventType: EventType.TRACK_HIDE,
-            eventData: { trackId: this.trackId, visibility: false },
+            eventData: {trackId: this.trackId, visibility: false},
           });
           this.hidden = true;
         } else if (dataElems.length > 0 && this.hidden) {
           this.contextManager.next({
             eventType: EventType.TRACK_HIDE,
-            eventData: { trackId: this.trackId, visibility: true },
+            eventData: {trackId: this.trackId, visibility: true},
           });
           this.hidden = false;
         }

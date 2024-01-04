@@ -1,5 +1,12 @@
-import { RcsbAbstractDisplay } from "./RcsbAbstractDisplay";
-import { Selection, BaseType, select } from "d3-selection";
+import {BaseType, Selection, select} from "d3-selection";
+
+import {
+  RcsbFvTrackData,
+  RcsbFvTrackDataElementGapInterface,
+  RcsbFvTrackDataElementInterface,
+} from "../../RcsbDataManager/RcsbDataManager";
+import classes from "../../scss/RcsbBoard.module.scss";
+import {RcsbD3Constants} from "../RcsbD3/RcsbD3Constants";
 import {
   CircleDecoratorInterface,
   LineDecoratorInterface,
@@ -9,13 +16,7 @@ import {
   PlotLineInterface,
   RcsbD3BlockManager,
 } from "../RcsbD3/RcsbD3DisplayManager/RcsbD3BlockManager";
-import {
-  RcsbFvTrackData,
-  RcsbFvTrackDataElementGapInterface,
-  RcsbFvTrackDataElementInterface,
-} from "../../RcsbDataManager/RcsbDataManager";
-import classes from "../../scss/RcsbBoard.module.scss";
-import { RcsbD3Constants } from "../RcsbD3/RcsbD3Constants";
+import {RcsbAbstractDisplay} from "./RcsbAbstractDisplay";
 
 export interface BlockElementInterface {
   /**Alternative begin position for rects in block displays. It is used to split annotation into multiple rects when gaps are included*/
@@ -99,12 +100,12 @@ export class RcsbBlockDisplay extends RcsbAbstractDisplay {
       dataElems.forEach((d) => {
         if (d.gaps != null && d.gaps.length > 0) {
           const G: Array<RcsbFvTrackDataElementGapInterface> = d.gaps;
-          out.push({ ...d, rectBegin: d.begin, rectEnd: G[0].begin });
+          out.push({...d, rectBegin: d.begin, rectEnd: G[0].begin});
           d.gaps.forEach((g, n) => {
             if (n + 1 < G.length) {
-              out.push({ ...d, rectBegin: g.end, rectEnd: G[n + 1].begin });
+              out.push({...d, rectBegin: g.end, rectEnd: G[n + 1].begin});
             } else {
-              out.push({ ...d, rectBegin: g.end, rectEnd: d.end });
+              out.push({...d, rectBegin: g.end, rectEnd: d.end});
             }
           });
         } else {

@@ -1,8 +1,9 @@
-import { Selection, BaseType, select } from "d3-selection";
-import { RcsbD3Constants } from "../RcsbD3Constants";
-import { RcsbFvTrackDataElementInterface } from "../../../RcsbDataManager/RcsbDataManager";
-import { asyncScheduler, Subscription } from "rxjs";
-import { RcsbScaleInterface } from "../RcsbD3ScaleFactory";
+import {BaseType, Selection, select} from "d3-selection";
+import {Subscription, asyncScheduler} from "rxjs";
+
+import {RcsbFvTrackDataElementInterface} from "../../../RcsbDataManager/RcsbDataManager";
+import {RcsbD3Constants} from "../RcsbD3Constants";
+import {RcsbScaleInterface} from "../RcsbD3ScaleFactory";
 
 export interface PlotSequenceInterface {
   elements: Selection<

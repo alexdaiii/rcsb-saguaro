@@ -1,7 +1,8 @@
-import { RcsbFvDOMConstants } from "../RcsbFvConfig/RcsbFvDOMConstants";
-import { computePosition, detectOverflow } from "@floating-ui/dom";
-import { RcsbFvTrackDataElementInterface } from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbFvTooltipInterface } from "./RcsbFvTooltipInterface";
+import {computePosition, detectOverflow} from "@floating-ui/dom";
+
+import {RcsbFvTrackDataElementInterface} from "../../RcsbDataManager/RcsbDataManager";
+import {RcsbFvDOMConstants} from "../RcsbFvConfig/RcsbFvDOMConstants";
+import {RcsbFvTooltipInterface} from "./RcsbFvTooltipInterface";
 
 export class RcsbFvTooltipManager {
   private readonly boardId: string;
@@ -61,7 +62,7 @@ export class RcsbFvTooltipManager {
               rootBoundary: "viewport",
             });
             if (overflow.top > 0)
-              return { y: overflow.top + middlewareArguments.y };
+              return {y: overflow.top + middlewareArguments.y};
             return {};
           },
         },
@@ -91,12 +92,12 @@ export class RcsbFvTooltipManager {
               rootBoundary: "viewport",
             });
             if (overflow.top > 0)
-              return { y: overflow.top + middlewareArguments.y };
+              return {y: overflow.top + middlewareArguments.y};
             return {};
           },
         },
       ],
-    }).then(({ x, y }) => {
+    }).then(({x, y}) => {
       Object.assign(this.tooltipDescriptionDiv.style, {
         left: `${x}px`,
         top: `${y - 30}px`,

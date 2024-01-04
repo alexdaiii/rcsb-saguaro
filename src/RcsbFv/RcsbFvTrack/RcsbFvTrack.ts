@@ -1,27 +1,28 @@
-import { RcsbBoard } from "../../RcsbBoard/RcsbBoard";
+import {Subscription} from "rxjs";
+
+import {RcsbBoard} from "../../RcsbBoard/RcsbBoard";
+import {RcsbScaleInterface} from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbCompositeDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbCompositeDisplay";
+import {RcsbDisplayInterface} from "../../RcsbBoard/RcsbDisplay/RcsbDisplayInterface";
+import {RcsbSelection} from "../../RcsbBoard/RcsbSelection";
+import {
+  RcsbDataManager,
+  RcsbFvTrackData,
+  RcsbFvTrackDataMap,
+} from "../../RcsbDataManager/RcsbDataManager";
+import {RcsbFvConfig} from "../RcsbFvConfig/RcsbFvConfig";
+import {RcsbFvRowExtendedConfigInterface} from "../RcsbFvConfig/RcsbFvConfigInterface";
 import {
   RcsbFvDefaultConfigValues,
   RcsbFvDisplayTypes,
 } from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
-import { RcsbFvDisplay } from "./RcsbFvDisplay";
-import { RcsbFvConfig } from "../RcsbFvConfig/RcsbFvConfig";
-import { RcsbFvRowExtendedConfigInterface } from "../RcsbFvConfig/RcsbFvConfigInterface";
-import {
-  RcsbFvTrackData,
-  RcsbDataManager,
-  RcsbFvTrackDataMap,
-} from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbDisplayInterface } from "../../RcsbBoard/RcsbDisplay/RcsbDisplayInterface";
 import {
   EventType,
   RcsbFvContextManager,
   RcsbFvContextManagerType,
   SelectionInterface,
 } from "../RcsbFvContextManager/RcsbFvContextManager";
-import { Subscription } from "rxjs";
-import { RcsbCompositeDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbCompositeDisplay";
-import { RcsbSelection } from "../../RcsbBoard/RcsbSelection";
-import { RcsbScaleInterface } from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbFvDisplay} from "./RcsbFvDisplay";
 
 /**This className provides  an abstraction layer to build and manage a particular board annotation cell*/
 export class RcsbFvTrack {

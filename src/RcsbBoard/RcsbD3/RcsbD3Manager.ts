@@ -1,10 +1,11 @@
-import { RcsbD3Constants } from "./RcsbD3Constants";
-import { Selection, select, BaseType, pointer } from "d3-selection";
-import { ZoomBehavior, ZoomedElementBaseType } from "d3-zoom";
+import {BaseType, Selection, pointer, select} from "d3-selection";
+import {ZoomBehavior, ZoomedElementBaseType} from "d3-zoom";
+
+import {RcsbFvTrackDataElementInterface} from "../../RcsbDataManager/RcsbDataManager";
 import classes from "../../scss/RcsbBoard.module.scss";
-import { RcsbFvTrackDataElementInterface } from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbScaleInterface } from "./RcsbD3ScaleFactory";
-import { RcsbTrackInterface } from "../RcsbDisplay/RcsbDisplayInterface";
+import {RcsbTrackInterface} from "../RcsbDisplay/RcsbDisplayInterface";
+import {RcsbD3Constants} from "./RcsbD3Constants";
+import {RcsbScaleInterface} from "./RcsbD3ScaleFactory";
 
 export interface SVGConfInterface {
   elementId: string;
@@ -201,7 +202,7 @@ export class RcsbD3Manager {
       begin: number,
       end: number,
     ) => {
-      return { begin: begin, end: end };
+      return {begin: begin, end: end};
     };
     const minWidth = (begin: number, end: number) => {
       let w: number =

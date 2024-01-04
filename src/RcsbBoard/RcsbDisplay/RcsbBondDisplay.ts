@@ -1,16 +1,17 @@
-import { RcsbAbstractDisplay } from "./RcsbAbstractDisplay";
-import { BaseType, Selection } from "d3-selection";
+import {BaseType, Selection} from "d3-selection";
+
+import {RcsbFvTrackDataElementInterface} from "../../RcsbDataManager/RcsbDataManager";
+import {RcsbD3Constants} from "../RcsbD3/RcsbD3Constants";
 import {
   MoveBondInterface,
   PlotBondInterface,
   RcsbD3BondManager,
 } from "../RcsbD3/RcsbD3DisplayManager/RcsbD3BondManager";
-import { RcsbFvTrackDataElementInterface } from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbD3Constants } from "../RcsbD3/RcsbD3Constants";
 import {
   RcsbD3ScaleFactory,
   RcsbScaleInterface,
 } from "../RcsbD3/RcsbD3ScaleFactory";
+import {RcsbAbstractDisplay} from "./RcsbAbstractDisplay";
 
 export class RcsbBondDisplay extends RcsbAbstractDisplay {
   private yScale: RcsbScaleInterface = RcsbD3ScaleFactory.getLinearScale();

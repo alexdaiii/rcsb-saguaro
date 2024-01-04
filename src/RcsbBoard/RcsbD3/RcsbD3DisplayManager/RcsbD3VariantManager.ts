@@ -1,10 +1,11 @@
-import { Selection, BaseType, select } from "d3-selection";
-import { ScalePoint } from "d3-scale";
-import { axisLeft, Axis } from "d3-axis";
-import { RcsbD3Constants } from "../RcsbD3Constants";
+import {Axis, axisLeft} from "d3-axis";
+import {ScalePoint} from "d3-scale";
+import {BaseType, Selection, select} from "d3-selection";
+
+import {RcsbFvTrackDataElementInterface} from "../../../RcsbDataManager/RcsbDataManager";
 import classes from "../../../scss/RcsbBoard.module.scss";
-import { RcsbFvTrackDataElementInterface } from "../../../RcsbDataManager/RcsbDataManager";
-import { RcsbScaleInterface } from "../RcsbD3ScaleFactory";
+import {RcsbD3Constants} from "../RcsbD3Constants";
+import {RcsbScaleInterface} from "../RcsbD3ScaleFactory";
 
 export interface PlotVariantInterface {
   elements: Selection<

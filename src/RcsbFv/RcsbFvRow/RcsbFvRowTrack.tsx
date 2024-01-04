@@ -1,20 +1,20 @@
 import React from "react";
-import { RcsbFvTrack } from "../RcsbFvTrack/RcsbFvTrack";
+import {Subscription, asyncScheduler} from "rxjs";
+
+import {RcsbScaleInterface} from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbSelection} from "../../RcsbBoard/RcsbSelection";
+import classes from "../../scss/RcsbFvRow.module.scss";
+import {RcsbFvRowExtendedConfigInterface} from "../RcsbFvConfig/RcsbFvConfigInterface";
 import {
   RcsbFvDefaultConfigValues,
   RcsbFvDisplayTypes,
 } from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
-import classes from "../../scss/RcsbFvRow.module.scss";
-import { RcsbFvRowExtendedConfigInterface } from "../RcsbFvConfig/RcsbFvConfigInterface";
 import {
   EventType,
   RcsbFvContextManager,
   RowReadyInterface,
 } from "../RcsbFvContextManager/RcsbFvContextManager";
-import { RcsbSelection } from "../../RcsbBoard/RcsbSelection";
-
-import { asyncScheduler, Subscription } from "rxjs";
-import { RcsbScaleInterface } from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbFvTrack} from "../RcsbFvTrack/RcsbFvTrack";
 
 /**Board track  annotations cell React component interface*/
 interface RcsbFvRowTrackInterface {

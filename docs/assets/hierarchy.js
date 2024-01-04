@@ -5,7 +5,7 @@
         s.r(t);
       },
       393: (e, t, s) => {
-        Object.defineProperty(t, "__esModule", { value: !0 }),
+        Object.defineProperty(t, "__esModule", {value: !0}),
           (t.HierarchyManager = void 0);
         const a = s(98);
         t.HierarchyManager = class {
@@ -121,7 +121,7 @@
         };
       },
       98: (e, t) => {
-        Object.defineProperty(t, "__esModule", { value: !0 }),
+        Object.defineProperty(t, "__esModule", {value: !0}),
           (t.StateManager = void 0);
         t.StateManager = class {
           constructor() {
@@ -153,14 +153,14 @@
   function s(a) {
     var o = t[a];
     if (void 0 !== o) return o.exports;
-    var r = (t[a] = { exports: {} });
+    var r = (t[a] = {exports: {}});
     return e[a](r, r.exports, s), r.exports;
   }
   s.r = (e) => {
     "undefined" != typeof Symbol &&
       Symbol.toStringTag &&
-      Object.defineProperty(e, Symbol.toStringTag, { value: "Module" }),
-      Object.defineProperty(e, "__esModule", { value: !0 });
+      Object.defineProperty(e, Symbol.toStringTag, {value: "Module"}),
+      Object.defineProperty(e, "__esModule", {value: !0});
   };
   (() => {
     s(893);

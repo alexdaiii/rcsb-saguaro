@@ -1,23 +1,23 @@
 import React from "react";
+import {ReactNode} from "react";
 
-import {
-  EventType,
-  RcsbFvContextManager,
-} from "../RcsbFvContextManager/RcsbFvContextManager";
-import { RcsbSelection } from "../../RcsbBoard/RcsbSelection";
-import { RcsbFvBoardFullConfigInterface } from "./RcsbFvBoard";
+import {RcsbScaleInterface} from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbSelection} from "../../RcsbBoard/RcsbSelection";
+import classes from "../../scss/RcsbFvRow.module.scss";
 import {
   RcsbFvBoardConfigInterface,
   RcsbFvRowExtendedConfigInterface,
 } from "../RcsbFvConfig/RcsbFvConfigInterface";
-import { RcsbFvDefaultConfigValues } from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
-import { RcsbFvRow } from "../RcsbFvRow/RcsbFvRow";
-import classes from "../../scss/RcsbFvRow.module.scss";
-import { RowConfigFactory } from "./Utils/RowConfigFactory";
-import { RcsbScaleInterface } from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
-import { RcsbFvRowRenderConfigInterface } from "./Utils/BoardDataState";
-import { AxisRow } from "./Components/AxisRow";
-import { ReactNode } from "react";
+import {RcsbFvDefaultConfigValues} from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {
+  EventType,
+  RcsbFvContextManager,
+} from "../RcsbFvContextManager/RcsbFvContextManager";
+import {RcsbFvRow} from "../RcsbFvRow/RcsbFvRow";
+import {AxisRow} from "./Components/AxisRow";
+import {RcsbFvBoardFullConfigInterface} from "./RcsbFvBoard";
+import {RcsbFvRowRenderConfigInterface} from "./Utils/BoardDataState";
+import {RowConfigFactory} from "./Utils/RowConfigFactory";
 
 interface RcsbFvTableInterface extends RcsbFvBoardFullConfigInterface {
   readonly boardId: string;

@@ -1,21 +1,22 @@
+import {Selection} from "d3-selection";
+import {Subject, Subscription, asyncScheduler} from "rxjs";
+
+import {
+  RcsbFvTrackData,
+  RcsbFvTrackDataElementInterface,
+  RcsbFvTrackDataMap,
+} from "../../RcsbDataManager/RcsbDataManager";
+import {RcsbFvContextManager} from "../../RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
+import classes from "../../scss/RcsbBoard.module.scss";
+import {LocationViewInterface} from "../RcsbBoard";
 import {
   HighlightRegionInterface,
   MoveSelectedRegionInterface,
   RcsbD3Manager,
   TrackConfInterface,
 } from "../RcsbD3/RcsbD3Manager";
-import { Selection } from "d3-selection";
-import classes from "../../scss/RcsbBoard.module.scss";
-import {
-  RcsbFvTrackData,
-  RcsbFvTrackDataElementInterface,
-  RcsbFvTrackDataMap,
-} from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbFvContextManager } from "../../RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
-import { LocationViewInterface } from "../RcsbBoard";
-import { RcsbScaleInterface } from "../RcsbD3/RcsbD3ScaleFactory";
-import { RcsbTrackInterface } from "./RcsbDisplayInterface";
-import { asyncScheduler, Subject, Subscription } from "rxjs";
+import {RcsbScaleInterface} from "../RcsbD3/RcsbD3ScaleFactory";
+import {RcsbTrackInterface} from "./RcsbDisplayInterface";
 
 export abstract class RcsbAbstractTrack implements RcsbTrackInterface {
   protected d3Manager: RcsbD3Manager;
@@ -36,7 +37,7 @@ export abstract class RcsbAbstractTrack implements RcsbTrackInterface {
   ) => void;
 
   readonly trackSubject: RcsbTrackInterface["trackSubject"] = {
-    mousemove: new Subject<{ e: MouseEvent; n: number }>(),
+    mousemove: new Subject<{e: MouseEvent; n: number}>(),
     mouseenter: new Subject<MouseEvent>(),
     mouseleave: new Subject<MouseEvent>(),
   };
@@ -135,7 +136,7 @@ export abstract class RcsbAbstractTrack implements RcsbTrackInterface {
   private highlightRegionTask: Subscription;
   highlightRegion(
     d: Array<RcsbFvTrackDataElementInterface> | null,
-    options?: { color?: string; rectClass?: string },
+    options?: {color?: string; rectClass?: string},
   ): void {
     const height: number = this._height;
     const xScale: RcsbScaleInterface = this.xScale;

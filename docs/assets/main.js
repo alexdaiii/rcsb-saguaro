@@ -7,9 +7,7 @@
   var Oe = Object.getOwnPropertyNames;
   var _e = Object.getPrototypeOf,
     Re = Object.prototype.hasOwnProperty;
-  var Me = (t, e) => () => (
-    e || t((e = { exports: {} }).exports, e), e.exports
-  );
+  var Me = (t, e) => () => (e || t((e = {exports: {}}).exports, e), e.exports);
   var Fe = (t, e, n, r) => {
     if ((e && typeof e == "object") || typeof e == "function")
       for (let i of Oe(e))
@@ -25,7 +23,7 @@
     (n = t != null ? Pe(_e(t)) : {}),
     Fe(
       e || !t || !t.__esModule
-        ? ne(n, "default", { value: t, enumerable: !0 })
+        ? ne(n, "default", {value: t, enumerable: !0})
         : n,
       t,
     )
@@ -664,7 +662,7 @@
         (t.TokenSet.fromFuzzyString = function (e, n) {
           for (
             var r = new t.TokenSet(),
-              i = [{ node: r, editsRemaining: n, str: e }];
+              i = [{node: r, editsRemaining: n, str: e}];
             i.length;
 
           ) {
@@ -751,14 +749,14 @@
           return r;
         }),
         (t.TokenSet.prototype.toArray = function () {
-          for (var e = [], n = [{ prefix: "", node: this }]; n.length; ) {
+          for (var e = [], n = [{prefix: "", node: this}]; n.length; ) {
             var r = n.pop(),
               i = Object.keys(r.node.edges),
               s = i.length;
             r.node.final && (r.prefix.charAt(0), e.push(r.prefix));
             for (var o = 0; o < s; o++) {
               var a = i[o];
-              n.push({ prefix: r.prefix.concat(a), node: r.node.edges[a] });
+              n.push({prefix: r.prefix.concat(a), node: r.node.edges[a]});
             }
           }
           return e;
@@ -783,7 +781,7 @@
           for (
             var n = new t.TokenSet(),
               r = void 0,
-              i = [{ qNode: e, output: n, node: this }];
+              i = [{qNode: e, output: n, node: this}];
             i.length;
 
           ) {
@@ -809,7 +807,7 @@
                     : ((p = new t.TokenSet()),
                       (p.final = L),
                       (r.output.edges[f] = p)),
-                    i.push({ qNode: g, output: p, node: b });
+                    i.push({qNode: g, output: p, node: b});
                 }
               }
           }
@@ -842,7 +840,7 @@
             var s = new t.TokenSet(),
               o = e[i];
             (n.edges[o] = s),
-              this.uncheckedNodes.push({ parent: n, char: o, child: s }),
+              this.uncheckedNodes.push({parent: n, char: o, child: s}),
               (n = s);
           }
           (n.final = !0), (this.previousWord = e);
@@ -892,7 +890,7 @@
               d = null,
               v = t.Set.empty;
             u.usePipeline
-              ? (d = this.pipeline.runString(u.term, { fields: u.fields }))
+              ? (d = this.pipeline.runString(u.term, {fields: u.fields}))
               : (d = [u.term]);
             for (var f = 0; f < d.length; f++) {
               var b = d[f];
@@ -981,7 +979,7 @@
               if ((M = I[h]) !== void 0)
                 (M.score += O), M.matchData.combine(r[T]);
               else {
-                var E = { ref: h, score: O, matchData: r[T] };
+                var E = {ref: h, score: O, matchData: r[T]};
                 (I[h] = E), y.push(E);
               }
             }
@@ -1085,7 +1083,7 @@
             var o = i[s],
               a = this._fields[o].extractor,
               l = a ? a(e) : e[o],
-              u = this.tokenizer(l, { fields: [o] }),
+              u = this.tokenizer(l, {fields: [o]}),
               d = this.pipeline.run(u),
               v = new t.FieldRef(r, o),
               f = Object.create(null);
@@ -1270,7 +1268,7 @@
         (t.Query.wildcard.NONE = 0),
         (t.Query.wildcard.LEADING = 1),
         (t.Query.wildcard.TRAILING = 2),
-        (t.Query.presence = { OPTIONAL: 1, REQUIRED: 2, PROHIBITED: 3 }),
+        (t.Query.presence = {OPTIONAL: 1, REQUIRED: 2, PROHIBITED: 3}),
         (t.Query.prototype.clause = function (e) {
           return (
             "fields" in e || (e.fields = this.allFields),
@@ -1641,7 +1639,7 @@
   });
   var re = [];
   function G(t, e) {
-    re.push({ selector: e, constructor: t });
+    re.push({selector: e, constructor: t});
   }
   var U = class {
     constructor() {
@@ -1658,7 +1656,7 @@
       re.forEach((n) => {
         e.querySelectorAll(n.selector).forEach((r) => {
           r.dataset.hasInstance ||
-            (new n.constructor({ el: r, app: this }),
+            (new n.constructor({el: r, app: this}),
             (r.dataset.hasInstance = String(!0)));
         });
       });
@@ -1743,7 +1741,7 @@
   function he() {
     let t = document.getElementById("tsd-search");
     if (!t) return;
-    let e = { base: t.dataset.base + "/" },
+    let e = {base: t.dataset.base + "/"},
       n = document.getElementById("tsd-search-script");
     t.classList.add("loading"),
       n &&
@@ -1902,7 +1900,7 @@
   var F = "mousedown",
     pe = "mousemove",
     B = "mouseup",
-    J = { x: 0, y: 0 },
+    J = {x: 0, y: 0},
     fe = !1,
     ee = !1,
     He = !1,
@@ -2108,7 +2106,7 @@
   var Se = document.getElementById("tsd-theme");
   Se && ge(Se);
   var je = new U();
-  Object.defineProperty(window, "app", { value: je });
+  Object.defineProperty(window, "app", {value: je});
   he();
   be();
 })();

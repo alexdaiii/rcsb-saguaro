@@ -46,7 +46,7 @@ export interface RcsbFvColorGradient {
 
 /**Array of annotation elements*/
 export class RcsbFvTrackData<
-  D extends { [k: string]: any } = { [k: string]: any },
+  D extends {[k: string]: any} = {[k: string]: any},
 > extends Array<RcsbFvTrackDataElementInterface & D> {}
 
 /**Map of annotation elements*/

@@ -1,8 +1,17 @@
-import { createRoot, Root } from "react-dom/client";
+import {Root, createRoot} from "react-dom/client";
+import uniqid from "uniqid";
+
+import {
+  RcsbD3ScaleFactory,
+  RcsbScaleInterface,
+} from "../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbSelection, SelectionInterface} from "../RcsbBoard/RcsbSelection";
+import {RcsbFvTrackData} from "../RcsbDataManager/RcsbDataManager";
 import {
   RcsbFvBoard,
   RcsbFvBoardFullConfigInterface,
 } from "./RcsbFvBoard/RcsbFvBoard";
+import {BoardDataState} from "./RcsbFvBoard/Utils/BoardDataState";
 import {
   RcsbFvBoardConfigInterface,
   RcsbFvRowConfigInterface,
@@ -10,27 +19,19 @@ import {
 import {
   EventType,
   RcsbFvContextManager,
-  TrackVisibilityInterface,
   SetSelectionInterface,
+  TrackVisibilityInterface,
 } from "./RcsbFvContextManager/RcsbFvContextManager";
-import { RcsbFvTrackData } from "../RcsbDataManager/RcsbDataManager";
-import { RcsbSelection, SelectionInterface } from "../RcsbBoard/RcsbSelection";
-import {
-  RcsbD3ScaleFactory,
-  RcsbScaleInterface,
-} from "../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
-import { BoardDataState } from "./RcsbFvBoard/Utils/BoardDataState";
-import uniqid from "uniqid";
-import { RcsbFvStateManager } from "./RcsbFvState/RcsbFvStateManager";
+import {RcsbFvStateManager} from "./RcsbFvState/RcsbFvStateManager";
 
 /**
  * Protein Feature Viewer (PFV) constructor interface
  */
 export interface RcsbFvInterface<
-  P extends { [k: string]: any } = {},
-  S extends { [k: string]: any } = {},
-  R extends { [k: string]: any } = {},
-  M extends { [k: string]: any } = {},
+  P extends {[k: string]: any} = {},
+  S extends {[k: string]: any} = {},
+  R extends {[k: string]: any} = {},
+  M extends {[k: string]: any} = {},
 > {
   /**Array of configurations for each board track*/
   readonly rowConfigData: RcsbFvRowConfigInterface<P, S, R, M>[];
@@ -44,10 +45,10 @@ export interface RcsbFvInterface<
  * Protein Feature Viewer entry point
  */
 export class RcsbFv<
-  P extends { [k: string]: any } = {},
-  S extends { [k: string]: any } = {},
-  R extends { [k: string]: any } = {},
-  M extends { [k: string]: any } = {},
+  P extends {[k: string]: any} = {},
+  S extends {[k: string]: any} = {},
+  R extends {[k: string]: any} = {},
+  M extends {[k: string]: any} = {},
 > {
   /**rxjs event based handler used to communicate events (click, highlight, move) between board tracks*/
   private readonly contextManager: RcsbFvContextManager =
@@ -122,7 +123,7 @@ export class RcsbFv<
    * @param config Configuration of the board
    */
   public setBoardConfig(config: RcsbFvBoardConfigInterface): Promise<void> {
-    return this.updateBoardConfig({ boardConfigData: config });
+    return this.updateBoardConfig({boardConfigData: config});
   }
 
   /**
@@ -203,7 +204,7 @@ export class RcsbFv<
     trackId: string,
     trackData: RcsbFvTrackData,
   ): Promise<void> {
-    this.boardDataSate.addTrackData({ trackId, trackData });
+    this.boardDataSate.addTrackData({trackId, trackData});
     return this.updateBoardData();
   }
 
@@ -217,7 +218,7 @@ export class RcsbFv<
     trackData: RcsbFvTrackData,
     displayId?: string,
   ): Promise<void> {
-    this.boardDataSate.updateTrackData({ trackId, trackData, displayId });
+    this.boardDataSate.updateTrackData({trackId, trackData, displayId});
     return this.updateBoardData();
   }
 
@@ -286,7 +287,7 @@ export class RcsbFv<
   public setDomain(domain: [number, number]): void {
     this.contextManager.next({
       eventType: EventType.DOMAIN_VIEW,
-      eventData: { domain: domain },
+      eventData: {domain: domain},
     });
   }
 
@@ -342,7 +343,7 @@ export class RcsbFv<
    * @param newIndex new position
    * **/
   public moveTrack(oldIndex: number, newIndex: number): Promise<void> {
-    this.boardDataSate.moveTrack({ oldIndex, newIndex });
+    this.boardDataSate.moveTrack({oldIndex, newIndex});
     return this.updateBoardData();
   }
 

@@ -1,20 +1,20 @@
+import {LocationViewInterface} from "../../RcsbBoard/RcsbBoard";
 import {
-  RcsbFvDisplayTypes,
-  InterpolationTypes,
-  RcsbFvDefaultConfigValues,
-} from "./RcsbFvDefaultConfigValues";
+  RcsbDataManager,
+  RcsbFvColorGradient,
+  RcsbFvTrackData,
+  RcsbFvTrackDataElementInterface,
+} from "../../RcsbDataManager/RcsbDataManager";
+import {RcsbFvTooltipInterface} from "../RcsbFvTooltip/RcsbFvTooltipInterface";
 import {
   RcsbFvDisplayConfigInterface,
   RcsbFvRowExtendedConfigInterface,
 } from "./RcsbFvConfigInterface";
 import {
-  RcsbFvTrackData,
-  RcsbDataManager,
-  RcsbFvTrackDataElementInterface,
-  RcsbFvColorGradient,
-} from "../../RcsbDataManager/RcsbDataManager";
-import { LocationViewInterface } from "../../RcsbBoard/RcsbBoard";
-import { RcsbFvTooltipInterface } from "../RcsbFvTooltip/RcsbFvTooltipInterface";
+  InterpolationTypes,
+  RcsbFvDefaultConfigValues,
+  RcsbFvDisplayTypes,
+} from "./RcsbFvDefaultConfigValues";
 
 /**Board track configuration manager className*/
 export class RcsbFvConfig implements RcsbFvRowExtendedConfigInterface {

@@ -17,7 +17,7 @@ export namespace RowConfigFactory {
     rowConfig: RcsbFvRowExtendedConfigInterface,
     boardConfig: RcsbFvBoardConfigInterface,
   ): RcsbFvRowExtendedConfigInterface {
-    const out: RcsbFvRowExtendedConfigInterface = { ...rowConfig };
+    const out: RcsbFvRowExtendedConfigInterface = {...rowConfig};
     out.elementId = rowId;
     out.boardId = boardId;
     if (typeof boardConfig.length === "number") {

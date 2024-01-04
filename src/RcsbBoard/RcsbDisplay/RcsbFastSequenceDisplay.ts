@@ -1,22 +1,23 @@
-import { RcsbAbstractDisplay } from "./RcsbAbstractDisplay";
-import { BaseType, ContainerElement, pointer, Selection } from "d3-selection";
-import { LocationViewInterface } from "../RcsbBoard";
+import {BaseType, ContainerElement, Selection, pointer} from "d3-selection";
+
 import {
   RcsbFvTrackData,
   RcsbFvTrackDataElementInterface,
 } from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbD3Constants } from "../RcsbD3/RcsbD3Constants";
-import {
-  RcsbD3ScaleFactory,
-  RcsbScaleInterface,
-} from "../RcsbD3/RcsbD3ScaleFactory";
 import classes from "../../scss/RcsbBoard.module.scss";
+import {LocationViewInterface} from "../RcsbBoard";
+import {RcsbD3Constants} from "../RcsbD3/RcsbD3Constants";
 import {
   MoveFastSequenceInterface,
   PlotFastSequenceInterface,
   PlotFastSequenceLineInterface,
   RcsbD3FastSequenceManager,
 } from "../RcsbD3/RcsbD3DisplayManager/RcsbD3FastSequenceManager";
+import {
+  RcsbD3ScaleFactory,
+  RcsbScaleInterface,
+} from "../RcsbD3/RcsbD3ScaleFactory";
+import {RcsbAbstractDisplay} from "./RcsbAbstractDisplay";
 
 export class RcsbFastSequenceDisplay extends RcsbAbstractDisplay {
   private yScale: RcsbScaleInterface = RcsbD3ScaleFactory.getLinearScale();
@@ -36,14 +37,14 @@ export class RcsbFastSequenceDisplay extends RcsbAbstractDisplay {
       const x = pointer(event, svgNode)[0];
       this.index = Math.round(this.xScale.invert(x));
       this.elementSubject.mouseenter.next({
-        d: this.innerData[this.index] ?? { begin: this.index },
+        d: this.innerData[this.index] ?? {begin: this.index},
         e: event,
       });
     }
   }
 
   private mouseleave(event: MouseEvent) {
-    this.elementSubject.mouseleave.next({ d: { begin: this.index }, e: event });
+    this.elementSubject.mouseleave.next({d: {begin: this.index}, e: event});
   }
 
   private mouseclick = (event: MouseEvent) => {
@@ -61,7 +62,7 @@ export class RcsbFastSequenceDisplay extends RcsbAbstractDisplay {
         "select",
         false,
       );
-      this.elementSubject.mouseclick.next({ d: region, e: event });
+      this.elementSubject.mouseclick.next({d: region, e: event});
     }
   };
 
@@ -181,7 +182,7 @@ export class RcsbFastSequenceDisplay extends RcsbAbstractDisplay {
   }
 
   private rmSequenceLine(): void {
-    RcsbD3FastSequenceManager.clearLine({ trackG: this.g });
+    RcsbD3FastSequenceManager.clearLine({trackG: this.g});
   }
 
   private checkHideFlag(): void {

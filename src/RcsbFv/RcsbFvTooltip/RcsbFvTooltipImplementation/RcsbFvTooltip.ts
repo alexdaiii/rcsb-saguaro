@@ -1,5 +1,5 @@
-import { RcsbFvTooltipInterface } from "../RcsbFvTooltipInterface";
-import { RcsbFvTrackDataElementInterface } from "../../../RcsbDataManager/RcsbDataManager";
+import {RcsbFvTrackDataElementInterface} from "../../../RcsbDataManager/RcsbDataManager";
+import {RcsbFvTooltipInterface} from "../RcsbFvTooltipInterface";
 
 export class RcsbFvTooltip implements RcsbFvTooltipInterface {
   public showTooltip(d: RcsbFvTrackDataElementInterface): HTMLElement {

@@ -1,22 +1,22 @@
-import { RcsbFvDisplayTypes } from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {RcsbAreaDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbAreaDisplay";
+import {RcsbAxisDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbAxisDisplay";
+import {RcsbBlockDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbBlockDisplay";
+import {RcsbBondDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbBondDisplay";
+import {RcsbCompositeDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbCompositeDisplay";
+import {RcsbDisplayInterface} from "../../RcsbBoard/RcsbDisplay/RcsbDisplayInterface";
+import {RcsbFastSequenceDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbFastSequenceDisplay";
+import {RcsbLineDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbLineDisplay";
+import {RcsbPinDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbPinDisplay";
+import {RcsbVariantDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbVariantDisplay";
+import {RcsbVlineDisplay} from "../../RcsbBoard/RcsbDisplay/RcsbVlineDisplay";
+import {RcsbFvColorGradient} from "../../RcsbDataManager/RcsbDataManager";
 import {
   RcsbFvDisplayConfigInterface,
   RcsbFvRowExtendedConfigInterface,
 } from "../RcsbFvConfig/RcsbFvConfigInterface";
-import { RcsbDisplayInterface } from "../../RcsbBoard/RcsbDisplay/RcsbDisplayInterface";
-import { RcsbAxisDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbAxisDisplay";
-import { RcsbPinDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbPinDisplay";
-import { RcsbBondDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbBondDisplay";
-import { RcsbFastSequenceDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbFastSequenceDisplay";
-import { RcsbCompositeDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbCompositeDisplay";
-import { RcsbBlockDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbBlockDisplay";
-import { RcsbLineDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbLineDisplay";
-import { RcsbAreaDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbAreaDisplay";
-import { RcsbVariantDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbVariantDisplay";
-import { RcsbVlineDisplay } from "../../RcsbBoard/RcsbDisplay/RcsbVlineDisplay";
-import { RcsbFvColorGradient } from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbFvTooltipManager } from "../RcsbFvTooltip/RcsbFvTooltipManager";
-import { RcsbFvTooltip } from "../RcsbFvTooltip/RcsbFvTooltipImplementation/RcsbFvTooltip";
+import {RcsbFvDisplayTypes} from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {RcsbFvTooltip} from "../RcsbFvTooltip/RcsbFvTooltipImplementation/RcsbFvTooltip";
+import {RcsbFvTooltipManager} from "../RcsbFvTooltip/RcsbFvTooltipManager";
 
 export class RcsbFvDisplay {
   private displayIds: Array<string> = [];
@@ -89,7 +89,7 @@ export class RcsbFvDisplay {
     config: RcsbFvRowExtendedConfigInterface,
     displayConfig: RcsbFvDisplayConfigInterface,
   ): RcsbFvRowExtendedConfigInterface {
-    return { ...config, ...displayConfig };
+    return {...config, ...displayConfig};
   }
 
   private static singleDisplay(
@@ -225,17 +225,17 @@ function configDisplay(
 ) {
   if (display != null && typeof config.elementClickCallback === "function") {
     display.elementSubject.mouseclick.subscribe(
-      ({ d, e }) => config.elementClickCallback?.(d, e),
+      ({d, e}) => config.elementClickCallback?.(d, e),
     );
   }
   if (display != null && typeof config.elementEnterCallback === "function") {
     display.elementSubject.mouseenter.subscribe(
-      ({ d, e }) => config.elementEnterCallback?.(d, e),
+      ({d, e}) => config.elementEnterCallback?.(d, e),
     );
   }
   if (display != null && typeof config.elementLeaveCallback === "function") {
     display.elementSubject.mouseleave.subscribe(
-      ({ d, e }) => config.elementLeaveCallback?.(d, e),
+      ({d, e}) => config.elementLeaveCallback?.(d, e),
     );
   }
   if (display != null && typeof config.updateDataOnMove === "function") {
@@ -261,11 +261,11 @@ function configTooltip(
       config.boardId,
       config.tooltipGenerator ?? new RcsbFvTooltip(),
     );
-    display.elementSubject.mouseenter.subscribe(({ d, e }) => {
+    display.elementSubject.mouseenter.subscribe(({d, e}) => {
       tooltipManager.showTooltip(d);
       tooltipManager.showTooltipDescription(d);
     });
-    display.elementSubject.mouseleave.subscribe(({ d, e }) => {
+    display.elementSubject.mouseleave.subscribe(({d, e}) => {
       tooltipManager.hideTooltip();
     });
   }

@@ -1,8 +1,9 @@
-import { Selection, BaseType, select } from "d3-selection";
-import { RcsbD3Constants } from "../RcsbD3Constants";
-import { RcsbFvTrackDataElementInterface } from "../../../RcsbDataManager/RcsbDataManager";
-import { RcsbScaleInterface } from "../RcsbD3ScaleFactory";
-import { BlockElementInterface } from "../../RcsbDisplay/RcsbBlockDisplay";
+import {BaseType, Selection, select} from "d3-selection";
+
+import {RcsbFvTrackDataElementInterface} from "../../../RcsbDataManager/RcsbDataManager";
+import {BlockElementInterface} from "../../RcsbDisplay/RcsbBlockDisplay";
+import {RcsbD3Constants} from "../RcsbD3Constants";
+import {RcsbScaleInterface} from "../RcsbD3ScaleFactory";
 
 interface RcsbFvBlockDataElementInterface
   extends RcsbFvTrackDataElementInterface,

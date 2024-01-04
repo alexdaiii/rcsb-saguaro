@@ -1,9 +1,10 @@
 import React from "react";
-import { RcsbFvDefaultConfigValues } from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {MouseEvent, ReactNode} from "react";
+
 import classes from "../../scss/RcsbFvRow.module.scss";
-import { RcsbFvRowExtendedConfigInterface } from "../RcsbFvConfig/RcsbFvConfigInterface";
-import { MouseEvent, ReactNode } from "react";
-import { RcsbFvRowMark } from "./RcsbFvRowMark";
+import {RcsbFvRowExtendedConfigInterface} from "../RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvDefaultConfigValues} from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
+import {RcsbFvRowMark} from "./RcsbFvRowMark";
 
 /**Board track title cell React component interface*/
 export interface RcsbFvRowTitleInterface {
@@ -77,7 +78,7 @@ export class RcsbFvRowTitle extends React.Component<
               {...this.props.data.rowMark}
               isGlowing={this.props.isGlowing}
             />
-            <div style={{ display: "inline-block" }}>
+            <div style={{display: "inline-block"}}>
               <RowTitleComponent {...this.props} {...rowTitleProps} />
             </div>
           </div>
@@ -105,20 +106,20 @@ export class RcsbFvRowTitle extends React.Component<
       };
       titleElement = (
         <>
-          <div style={{ ...style, float: "right", display: "inline-block" }}>
+          <div style={{...style, float: "right", display: "inline-block"}}>
             <div
               className={classes.rcsbFvRowTitleText}
-              style={{ lineHeight: height + "px" }}
+              style={{lineHeight: height + "px"}}
             >
               {this.setTitle()}
             </div>
           </div>
           <div
-            style={{ height: height, float: "right", display: "inline-block" }}
+            style={{height: height, float: "right", display: "inline-block"}}
           >
             <div
               className={classes.rcsbFvRowTitleText}
-              style={{ lineHeight: height + "px", display: "inline-block" }}
+              style={{lineHeight: height + "px", display: "inline-block"}}
             >
               <RcsbFvRowMark
                 {...this.props.data.rowMark}
@@ -268,9 +269,9 @@ export class RcsbFvRowTitle extends React.Component<
   private expandTitle(evt: MouseEvent<HTMLDivElement>, flag: boolean): void {
     const div: HTMLDivElement = evt.currentTarget;
     if (0 > div.clientWidth - div.scrollWidth && flag) {
-      if (flag) this.setState({ expandTitle: true });
+      if (flag) this.setState({expandTitle: true});
     } else {
-      this.setState({ expandTitle: false });
+      this.setState({expandTitle: false});
     }
   }
 }

@@ -1,19 +1,17 @@
-import {
-  RcsbDisplayInterface,
-  RcsbTrackInterface,
-} from "./RcsbDisplayInterface";
-import { LocationViewInterface } from "../RcsbBoard";
-import { RcsbD3Manager } from "../RcsbD3/RcsbD3Manager";
+import {BaseType, Selection} from "d3-selection";
+import {Subject} from "rxjs";
+
 import {
   RcsbFvColorGradient,
   RcsbFvTrackData,
   RcsbFvTrackDataElementInterface,
   RcsbFvTrackDataMap,
 } from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbFvContextManager } from "../../RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
-import { BaseType, Selection } from "d3-selection";
-import { RcsbScaleInterface } from "../RcsbD3/RcsbD3ScaleFactory";
-import { Subject } from "rxjs";
+import {RcsbFvContextManager} from "../../RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
+import {LocationViewInterface} from "../RcsbBoard";
+import {RcsbD3Manager} from "../RcsbD3/RcsbD3Manager";
+import {RcsbScaleInterface} from "../RcsbD3/RcsbD3ScaleFactory";
+import {RcsbDisplayInterface, RcsbTrackInterface} from "./RcsbDisplayInterface";
 
 interface DisplayElementInterface {
   display: RcsbDisplayInterface;
@@ -41,7 +39,7 @@ export class RcsbCompositeDisplay implements RcsbDisplayInterface {
   };
 
   readonly trackSubject: RcsbTrackInterface["trackSubject"] = {
-    mousemove: new Subject<{ e: MouseEvent; n: number }>(),
+    mousemove: new Subject<{e: MouseEvent; n: number}>(),
     mouseenter: new Subject<MouseEvent>(),
     mouseleave: new Subject<MouseEvent>(),
   };
@@ -164,7 +162,7 @@ export class RcsbCompositeDisplay implements RcsbDisplayInterface {
 
   highlightRegion(
     d: Array<RcsbFvTrackDataElementInterface> | null,
-    options?: { color?: string; rectClass?: string },
+    options?: {color?: string; rectClass?: string},
   ): void {
     if (this.innerDisplays.length > 0) {
       this.innerDisplays[0].display.highlightRegion(d, options);

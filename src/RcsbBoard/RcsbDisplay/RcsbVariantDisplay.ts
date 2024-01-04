@@ -1,16 +1,17 @@
-import { RcsbAbstractDisplay } from "./RcsbAbstractDisplay";
-import { BaseType, Selection } from "d3-selection";
+import {ScalePoint} from "d3-scale";
+import {BaseType, Selection} from "d3-selection";
+
+import {RcsbFvTrackDataElementInterface} from "../../RcsbDataManager/RcsbDataManager";
 import {
   MoveVariantInterface,
   PlotVariantInterface,
   RcsbD3VariantManager,
 } from "../RcsbD3/RcsbD3DisplayManager/RcsbD3VariantManager";
-import { ScalePoint } from "d3-scale";
-import { RcsbFvTrackDataElementInterface } from "../../RcsbDataManager/RcsbDataManager";
 import {
   RcsbD3ScaleFactory,
   RcsbScaleInterface,
 } from "../RcsbD3/RcsbD3ScaleFactory";
+import {RcsbAbstractDisplay} from "./RcsbAbstractDisplay";
 
 export class RcsbVariantDisplay extends RcsbAbstractDisplay {
   private aaList: Array<string> = [

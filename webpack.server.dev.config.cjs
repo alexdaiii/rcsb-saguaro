@@ -1,13 +1,7 @@
-const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-module.exports = {
-  //mode: "development",
-  mode: "production",
-  entry: {
-    RcsbFv: "./src/RcsbFv.ts",
-    "rcsb-saguaro": "./src/RcsbSaguaro.js",
-  },
+const commonConfig = {
+  mode: "development",
   module: {
     rules: [
       {
@@ -27,11 +21,16 @@ module.exports = {
         test: /\.tsx?$/,
         loader: "ts-loader",
         exclude: /node_modules/,
+        options: {
+          compilerOptions: {
+            "emitDeclarationOnly": false
+          }
+        }
       },
       {
         test: /\.jsx?$/,
         loader: "babel-loader",
-        exclude: /node_modules/,
+        exclude: [/node_modules/],
       },
       {
         test: /\.s?css$/,
@@ -43,9 +42,7 @@ module.exports = {
               modules: true,
             },
           },
-          {
-            loader: "sass-loader",
-          },
+          "sass-loader",
         ],
       },
     ],
@@ -60,13 +57,39 @@ module.exports = {
       stream: require.resolve("stream-browserify"),
     },
   },
-  output: {
-    filename: "[name].js",
-    library: "RcsbFv",
-    libraryTarget: "umd",
-    umdNamedDefine: true,
-    path: path.resolve(__dirname, "build"),
-  },
   devtool: "source-map",
-  plugins: [new CleanWebpackPlugin()],
 };
+
+const examples = [
+  "MultipleTracks",
+  "MultipleAlignment",
+  "CompositeTrack",
+  "CustomTooltip",
+];
+const entries = examples.reduce((prev, current) => {
+  prev[current] = `./examples/RcsbFvExamples/${current}.ts`;
+  return prev;
+}, {});
+
+const server = {
+  ...commonConfig,
+  entry: entries,
+  performance: {
+    hints: false,
+  },
+  devServer: {
+    compress: true,
+    port: 9000,
+  },
+  plugins: Object.keys(entries).map(
+    (key) =>
+      new HtmlWebpackPlugin({
+        filename: `${key}.html`,
+        template: "./examples/RcsbFvExamples/index.html",
+        inject: true,
+        chunks: [key],
+      }),
+  ),
+};
+
+module.exports = [server];

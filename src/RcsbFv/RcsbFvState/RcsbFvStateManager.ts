@@ -1,3 +1,7 @@
+import {Subscription} from "rxjs";
+
+import {RcsbScaleInterface} from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbSelection} from "../../RcsbBoard/RcsbSelection";
 import {
   DomainViewInterface,
   EventType,
@@ -5,9 +9,6 @@ import {
   RcsbFvContextManagerType,
   SetSelectionInterface,
 } from "../RcsbFvContextManager/RcsbFvContextManager";
-import { RcsbScaleInterface } from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
-import { RcsbSelection } from "../../RcsbBoard/RcsbSelection";
-import { Subscription } from "rxjs";
 
 interface RcsbFvStateInterface {
   readonly boardId: string;
@@ -58,7 +59,7 @@ export class RcsbFvStateManager {
    * */
   private setSelection(newSelection: SetSelectionInterface): void {
     if (newSelection?.elements != null) {
-      const list: Array<{ begin: number; end?: number; isEmpty?: boolean }> =
+      const list: Array<{begin: number; end?: number; isEmpty?: boolean}> =
         newSelection.elements instanceof Array
           ? newSelection.elements
           : [newSelection.elements];
@@ -87,7 +88,7 @@ export class RcsbFvStateManager {
    * */
   private addSelection(newSelection: SetSelectionInterface): void {
     if (newSelection?.elements != null) {
-      const list: Array<{ begin: number; end?: number; isEmpty?: boolean }> =
+      const list: Array<{begin: number; end?: number; isEmpty?: boolean}> =
         newSelection.elements instanceof Array
           ? newSelection.elements
           : [newSelection.elements];

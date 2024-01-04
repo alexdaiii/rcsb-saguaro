@@ -1,15 +1,16 @@
-import { Selection, BaseType } from "d3-selection";
-import { LocationViewInterface } from "../RcsbBoard";
-import { RcsbD3Manager } from "../RcsbD3/RcsbD3Manager";
+import {BaseType, Selection} from "d3-selection";
+import {Subject} from "rxjs";
+
 import {
   RcsbFvColorGradient,
   RcsbFvTrackData,
   RcsbFvTrackDataElementInterface,
   RcsbFvTrackDataMap,
 } from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbFvContextManager } from "../../RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
-import { RcsbScaleInterface } from "../RcsbD3/RcsbD3ScaleFactory";
-import { Subject } from "rxjs";
+import {RcsbFvContextManager} from "../../RcsbFv/RcsbFvContextManager/RcsbFvContextManager";
+import {LocationViewInterface} from "../RcsbBoard";
+import {RcsbD3Manager} from "../RcsbD3/RcsbD3Manager";
+import {RcsbScaleInterface} from "../RcsbD3/RcsbD3ScaleFactory";
 
 export interface RcsbTrackInterface {
   height: (h?: number) => number;
@@ -39,11 +40,11 @@ export interface RcsbTrackInterface {
   ) => void;
   highlightRegion: (
     d: Array<RcsbFvTrackDataElementInterface> | null,
-    options?: { color?: string; rectClass?: string },
+    options?: {color?: string; rectClass?: string},
   ) => void;
   moveSelection: (mode: "select" | "hover") => void;
   readonly trackSubject: {
-    mousemove: Subject<{ e: MouseEvent; n: number }>;
+    mousemove: Subject<{e: MouseEvent; n: number}>;
     mouseenter: Subject<MouseEvent>;
     mouseleave: Subject<MouseEvent>;
   };
@@ -63,9 +64,9 @@ export interface RcsbDisplayInterface extends RcsbTrackInterface {
   displayEmpty: () => void;
   move: () => void;
   readonly elementSubject: {
-    mouseclick: Subject<{ d: RcsbFvTrackDataElementInterface; e: MouseEvent }>;
-    mouseenter: Subject<{ d: RcsbFvTrackDataElementInterface; e: MouseEvent }>;
-    mouseleave: Subject<{ d: RcsbFvTrackDataElementInterface; e: MouseEvent }>;
+    mouseclick: Subject<{d: RcsbFvTrackDataElementInterface; e: MouseEvent}>;
+    mouseenter: Subject<{d: RcsbFvTrackDataElementInterface; e: MouseEvent}>;
+    mouseleave: Subject<{d: RcsbFvTrackDataElementInterface; e: MouseEvent}>;
   };
   subscribeElementHighlight: (action: {
     enter: (d: RcsbFvTrackDataElementInterface) => void;

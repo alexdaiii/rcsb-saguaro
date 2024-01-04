@@ -1,12 +1,13 @@
-import { RcsbAbstractDisplay } from "./RcsbAbstractDisplay";
-import { Selection, BaseType } from "d3-selection";
+import {BaseType, Selection} from "d3-selection";
+
+import {RcsbFvTrackDataElementInterface} from "../../RcsbDataManager/RcsbDataManager";
+import {RcsbD3Constants} from "../RcsbD3/RcsbD3Constants";
 import {
   MoveVlineInterface,
   PlotVlineInterface,
   RcsbD3VlineManager,
 } from "../RcsbD3/RcsbD3DisplayManager/RcsbD3VlineManager";
-import { RcsbFvTrackDataElementInterface } from "../../RcsbDataManager/RcsbDataManager";
-import { RcsbD3Constants } from "../RcsbD3/RcsbD3Constants";
+import {RcsbAbstractDisplay} from "./RcsbAbstractDisplay";
 
 export class RcsbVlineDisplay extends RcsbAbstractDisplay {
   private rcsbD3VlineManager: RcsbD3VlineManager = new RcsbD3VlineManager();

@@ -1,23 +1,23 @@
 import React from "react";
-import { RcsbFvBoardConfigInterface } from "../RcsbFvConfig/RcsbFvConfigInterface";
-import classes from "../../scss/RcsbFvRow.module.scss";
+import {ReactNode} from "react";
+import {Subscription} from "rxjs";
 
+import {RcsbScaleInterface} from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import {RcsbSelection} from "../../RcsbBoard/RcsbSelection";
+import classes from "../../scss/RcsbFvRow.module.scss";
+import {RcsbFvBoardConfigInterface} from "../RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFvDOMConstants} from "../RcsbFvConfig/RcsbFvDOMConstants";
 import {
   EventType,
   RcsbFvContextManager,
   RcsbFvContextManagerType,
 } from "../RcsbFvContextManager/RcsbFvContextManager";
-import { Subscription } from "rxjs";
-import { RcsbSelection } from "../../RcsbBoard/RcsbSelection";
-import { RcsbFvUI } from "../RcsbFvUI/RcsbFvUI";
-import { RcsbFvDOMConstants } from "../RcsbFvConfig/RcsbFvDOMConstants";
-import { RcsbFvTable } from "./RcsbFvTable";
-import { BoardGlow } from "./Components/BoardGlow";
-import { RowGlow } from "./Components/RowGlow";
-import { RcsbScaleInterface } from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
-import { RcsbFvRowRenderConfigInterface } from "./Utils/BoardDataState";
-import { BoardProgress } from "./Components/BoardProgress";
-import { ReactNode } from "react";
+import {RcsbFvUI} from "../RcsbFvUI/RcsbFvUI";
+import {BoardGlow} from "./Components/BoardGlow";
+import {BoardProgress} from "./Components/BoardProgress";
+import {RowGlow} from "./Components/RowGlow";
+import {RcsbFvTable} from "./RcsbFvTable";
+import {RcsbFvRowRenderConfigInterface} from "./Utils/BoardDataState";
 
 /**Board React component configuration interface*/
 export interface RcsbFvBoardFullConfigInterface {
@@ -108,7 +108,7 @@ export class RcsbFvBoard extends React.Component<
         <div
           id={this.props.boardId + RcsbFvDOMConstants.TOOLTIP_DOM_ID_PREFIX}
           className={classes.rcsbFvTooltip}
-          {...{ [RcsbFvDOMConstants.POPPER_HIDDEN]: "" }}
+          {...{[RcsbFvDOMConstants.POPPER_HIDDEN]: ""}}
         />
         <div
           id={
@@ -116,7 +116,7 @@ export class RcsbFvBoard extends React.Component<
             RcsbFvDOMConstants.TOOLTIP_DESCRIPTION_DOM_ID_PREFIX
           }
           className={classes.rcsbFvTooltipDescription}
-          {...{ [RcsbFvDOMConstants.POPPER_HIDDEN]: "" }}
+          {...{[RcsbFvDOMConstants.POPPER_HIDDEN]: ""}}
         />
         <BoardProgress
           boardId={this.props.boardId}

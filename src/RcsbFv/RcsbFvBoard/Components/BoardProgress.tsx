@@ -1,17 +1,18 @@
+import {computePosition, detectOverflow} from "@floating-ui/dom";
 import React from "react";
-import { RcsbFvDOMConstants } from "../../RcsbFvConfig/RcsbFvDOMConstants";
+import {Subscription} from "rxjs";
+
 import classes from "../../../scss/RcsbFvRow.module.scss";
-import { RcsbFvDefaultConfigValues } from "../../RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
   RcsbFvBoardConfigInterface,
   RcsbFvRowExtendedConfigInterface,
 } from "../../RcsbFvConfig/RcsbFvConfigInterface";
-import { Subscription } from "rxjs";
+import {RcsbFvDOMConstants} from "../../RcsbFvConfig/RcsbFvDOMConstants";
+import {RcsbFvDefaultConfigValues} from "../../RcsbFvConfig/RcsbFvDefaultConfigValues";
 import {
   EventType,
   RcsbFvContextManager,
 } from "../../RcsbFvContextManager/RcsbFvContextManager";
-import { computePosition, detectOverflow } from "@floating-ui/dom";
 
 interface BoardProgressInterface {
   readonly boardId: string;
@@ -104,12 +105,12 @@ export class BoardProgress extends React.Component<BoardProgressInterface> {
               rootBoundary: "viewport",
             });
             if (overflow.top > offsetHeight)
-              return { y: overflow.top + middlewareArguments.y - offsetHeight };
+              return {y: overflow.top + middlewareArguments.y - offsetHeight};
             return {};
           },
         },
       ],
-    }).then(({ x, y }) => {
+    }).then(({x, y}) => {
       Object.assign(this.tooltipDiv.style, {
         left: `${x}px`,
         top: `${y + offsetHeight}px`,

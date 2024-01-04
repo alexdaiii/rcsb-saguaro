@@ -1,7 +1,13 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 
-const commonConfig = {
-  mode: "development",
+module.exports = {
+  //mode: "development",
+  mode: "production",
+  entry: {
+    RcsbFv: "./src/RcsbFv.ts",
+    "rcsb-saguaro": "./src/RcsbSaguaro.js",
+  },
   module: {
     rules: [
       {
@@ -25,7 +31,7 @@ const commonConfig = {
       {
         test: /\.jsx?$/,
         loader: "babel-loader",
-        exclude: [/node_modules/],
+        exclude: /node_modules/,
       },
       {
         test: /\.s?css$/,
@@ -34,12 +40,12 @@ const commonConfig = {
           {
             loader: "css-loader",
             options: {
-              modules: {
-                localIdentName: "[local]",
-              },
+              modules: true,
             },
           },
-          "sass-loader",
+          {
+            loader: "sass-loader",
+          },
         ],
       },
     ],
@@ -54,39 +60,13 @@ const commonConfig = {
       stream: require.resolve("stream-browserify"),
     },
   },
+  output: {
+    filename: "[name].js",
+    library: "RcsbFv",
+    libraryTarget: "umd",
+    umdNamedDefine: true,
+    path: path.resolve(__dirname, "build"),
+  },
   devtool: "source-map",
+  plugins: [new CleanWebpackPlugin()],
 };
-
-const examples = [
-  "MultipleTracks",
-  "MultipleAlignment",
-  "CompositeTrack",
-  "CustomTooltip",
-];
-const entries = examples.reduce((prev, current) => {
-  prev[current] = `./src/RcsbFvExamples/${current}.ts`;
-  return prev;
-}, {});
-
-const server = {
-  ...commonConfig,
-  entry: entries,
-  performance: {
-    hints: false,
-  },
-  devServer: {
-    compress: true,
-    port: 9000,
-  },
-  plugins: Object.keys(entries).map(
-    (key) =>
-      new HtmlWebpackPlugin({
-        filename: `${key}.html`,
-        template: "./src/RcsbFvExamples/index.html",
-        inject: true,
-        chunks: [key],
-      }),
-  ),
-};
-
-module.exports = [server];

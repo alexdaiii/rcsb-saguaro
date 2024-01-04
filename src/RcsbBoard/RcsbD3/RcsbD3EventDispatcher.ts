@@ -1,8 +1,9 @@
-import { pointer, ContainerElement } from "d3-selection";
-import { RcsbBoard } from "../RcsbBoard";
-import { RcsbD3Constants } from "./RcsbD3Constants";
-import { RcsbFvTrackDataElementInterface } from "../../RcsbDataManager/RcsbDataManager";
-import { asyncScheduler } from "rxjs";
+import {ContainerElement, pointer} from "d3-selection";
+import {asyncScheduler} from "rxjs";
+
+import {RcsbFvTrackDataElementInterface} from "../../RcsbDataManager/RcsbDataManager";
+import {RcsbBoard} from "../RcsbBoard";
+import {RcsbD3Constants} from "./RcsbD3Constants";
 
 export class RcsbD3EventDispatcher {
   private static selectionBegin: number;
@@ -78,7 +79,7 @@ export class RcsbD3EventDispatcher {
     board.d3Manager.svgG().on(RcsbD3Constants.MOUSE_MOVE, null);
     const region: RcsbFvTrackDataElementInterface =
       RcsbD3EventDispatcher.boardMousemove(event, board);
-    board.elementClickSubject.next({ d: region, e: event });
+    board.elementClickSubject.next({d: region, e: event});
     RcsbD3EventDispatcher.keepSelectingFlag = false;
   }
 
@@ -101,7 +102,7 @@ export class RcsbD3EventDispatcher {
           end: _end,
         };
         board.elementClickSubject.next({
-          d: { ...region, nonSpecific: true },
+          d: {...region, nonSpecific: true},
           e: event,
         });
       }
