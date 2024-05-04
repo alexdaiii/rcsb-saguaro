@@ -1,24 +1,58 @@
 {
   "compilerOptions": {
-    "declaration": true,
-    "target": "es6",
-    "alwaysStrict": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
-    "sourceMap": false,
-    "noUnusedLocals": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "module": "esnext",
+    "target": "ES2017",
+    // Specifies the JavaScript version to target when transpiling code.
+    "module": "ESNext",
+    // Defines the module system to use for code generation.
+    "skipLibCheck": true,
+    // Skips type checking of declaration files.
     "esModuleInterop": true,
+    // Enables compatibility with Babel.
+
     "moduleResolution": "node",
-    "importHelpers": true,
-    "noEmitHelpers": true,
-    "allowSyntheticDefaultImports": true,
+    // Specifies how modules are resolved when bundling.
+    "resolveJsonModule": true,
+    // Enables importing JSON modules.
+    "isolatedModules": true,
+    // Ensures each file is treated as a separate module.
     "jsx": "react-jsx",
-    "lib": [ "dom", "es2017" ],
-    "rootDir": "src",
-    "outDir": "lib"
+    // Configures JSX support for React.
+
+    "strict": true,
+    // Enables strict type checking.
+    "noUnusedLocals": true,
+    // MODIFIED to get rcsb saguro to compile
+    "strictPropertyInitialization": false,
+    // MODIFIED to get rcsb saguro to compile
+    // Flags unused local variables.
+//    "noUnusedParameters": true,
+    // Flags unused function parameters.
+    "noFallthroughCasesInSwitch": true,
+    // Requires handling all cases in a switch statement.
+    "forceConsistentCasingInFileNames": true,
+    // Requires that all file names be in the same casing.
+    "allowUnreachableCode": false,
+    // Allows unreachable code.
+
+    "declaration": true,
+    // Generates declaration files for TypeScript.
+    "declarationDir": "dist",
+    // Specifies the output directory for generated declaration files.
+    "sourceMap": true,
+    // Generates source maps for JavaScript files.
+    "outDir": "dist",
+    "baseUrl": ".",
+    // This must be specified if "paths" is specified.
+    "paths": {
+      "@/*": ["src/*"],
+    },
   },
-  "include": [ "src" ]
+  "include": ["src"],
+  // Specifies the directory to include when searching for TypeScript files.
+  "exclude": [
+    "dist",
+    "node_modules",
+    "src/**/*.test.tsx",
+    "src/**/*.stories.tsx"
+  ]
 }

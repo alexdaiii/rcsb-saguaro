@@ -1,9 +1,9 @@
 import {
     RcsbFvBoardConfigInterface,
     RcsbFvRowConfigInterface
-} from "../RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
-import {RcsbFv} from "../RcsbFv/RcsbFv";
-import {RcsbFvDisplayTypes} from "../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+} from "../src/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFv} from "../src/RcsbFv/RcsbFv";
+import {RcsbFvDisplayTypes} from "../src/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 
 const sequence = "MTTQAPTFTQPLQSVVVLEGSTATFEAHISGFPVPEVSWFRDGQVISTSTLPGVQISFSD" +
     "GRAKLTIPAVTKANSGRYSLKATNGSGQATSTAELLVKAETAPPNFVQRLQSMTVRQGSQ" +

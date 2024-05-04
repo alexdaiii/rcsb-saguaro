@@ -1,10 +1,9 @@
 import {
     RcsbFvBoardConfigInterface,
     RcsbFvRowConfigInterface
-} from "../RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
-import {RcsbFv} from "../RcsbFv/RcsbFv";
-import {RcsbFvDisplayTypes} from "../RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
-import {RcsbFvTrackDataElementInterface} from "../RcsbDataManager/RcsbDataManager";
+} from "../src/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import {RcsbFv} from "../src/RcsbFv/RcsbFv";
+import {RcsbFvDisplayTypes} from "../src/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
 
 const sequence = "MTTQAPTFTQPLQSVVVLEGSTATFEAHISGFPVPEVSWFRDGQVISTSTLPGVQISFSD" +
     "GRAKLTIPAVTKANSGRYSLKATNGSGQATSTAELLVKAETAPPNFVQRLQSMTVRQGSQ" +
@@ -27,8 +26,7 @@ const rowConfigData: RcsbFvRowConfigInterface[] = [
                 displayId:"compositeBlockSequence",
                 displayData: [{
                     begin:50,
-                    end:80,
-                    value: 23
+                    end:80
                 }]
             },
             {
@@ -71,8 +69,7 @@ const boardConfigData: RcsbFvBoardConfigInterface = {
     },
     onFvRenderStartsCallback:()=>{
         console.log("Fv starts");
-    },
-    tooltipGenerator: tooltipGenerator()
+    }
 };
 
 const sequenceConfigData: RcsbFvRowConfigInterface[] = [
@@ -97,24 +94,3 @@ fv.then(()=>{
     console.log("Ready viewer");
 });
 
-function tooltipGenerator( ) {
-    return {
-        showTooltip: (d: RcsbFvTrackDataElementInterface) => {
-            const tooltipDiv = document.createElement<"div">("div");
-
-            let region: string = "Begin: "+d.begin.toString();
-            if(typeof d.end === "number" && d.end!=d.begin) region += " End: "+d.end.toString();
-            const spanRegion: HTMLSpanElement = document.createElement<"span">("span");
-            spanRegion.append(region);
-
-            if(typeof d.value === "number"){
-                const valueRegion: HTMLSpanElement = document.createElement<"span">("span");
-                valueRegion.append(" | value: "+d.value);
-                spanRegion.append(valueRegion);
-            }
-
-            tooltipDiv.append(spanRegion);
-            return tooltipDiv;
-        }
-    }
-}
