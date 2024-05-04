@@ -22,7 +22,6 @@ export default defineConfig({
     },
     rollupOptions: {
       external: [
-        ...Object.keys(packageJson.dependencies),
         ...Object.keys(packageJson.peerDependencies),
       ], // Defines external dependencies for Rollup bundling.
       output: {

@@ -1,3 +1,27 @@
+/**Interpolation types for line and area displays*/
+export enum InterpolationTypes {
+  STEP = "step",
+  BASIS = "basis",
+  CARDINAL = "cardinal",
+  LINEAR = "linear",
+}
+
+/**Board track display types*/
+export enum RcsbFvDisplayTypes {
+  BLOCK = "block",
+  AXIS = "axis",
+  SEQUENCE = "sequence",
+  PIN = "pin",
+  LINE = "line",
+  AREA = "area",
+  BLOCK_AREA = "block-area",
+  MULTI_AREA = "multi-area",
+  VLINE = "vline",
+  VARIANT = "variant",
+  BOND = "bond",
+  COMPOSITE = "composite",
+}
+
 /**Default board configuration values definition*/
 interface RcsbFvDefaultConfigValuesInterface {
   readonly increasedView: number;
@@ -40,26 +64,4 @@ export const RcsbFvDefaultConfigValues: RcsbFvDefaultConfigValuesInterface = {
   rowGlowColor: "rgba(255,204,204,0.75)",
 };
 
-/**Interpolation types for line and area displays*/
-export const enum InterpolationTypes {
-  STEP = "step",
-  BASIS = "basis",
-  CARDINAL = "cardinal",
-  LINEAR = "linear",
-}
 
-/**Board track display types*/
-export const enum RcsbFvDisplayTypes {
-  BLOCK = "block",
-  AXIS = "axis",
-  SEQUENCE = "sequence",
-  PIN = "pin",
-  LINE = "line",
-  AREA = "area",
-  BLOCK_AREA = "block-area",
-  MULTI_AREA = "multi-area",
-  VLINE = "vline",
-  VARIANT = "variant",
-  BOND = "bond",
-  COMPOSITE = "composite",
-}
