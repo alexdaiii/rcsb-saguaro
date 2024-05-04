@@ -1,6 +1,6 @@
 {
   "name": "@alexdaiii/rcsb-saguaro",
-  "version": "1.0.4-beta",
+  "version": "1.0.5-beta",
   "description": "RCSB 1D Feature Viewer. Built with Vite.",
   "type": "module",
   "main": "dist/index.cjs.js",

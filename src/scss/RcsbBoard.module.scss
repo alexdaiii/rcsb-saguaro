@@ -2,27 +2,27 @@
 // VARIABLES
 //
 // Fonts sizes
-$tiny-font   : 10px;
-$small-font  : 12px;
-$normal-font : 14px;
+$tiny-font: 10px;
+$small-font: 12px;
+$normal-font: 14px;
 
 //
 // MIXINS
 //
 //
 @mixin tiny-font {
-  font-size : $tiny-font;
+  font-size: $tiny-font;
 }
 
 @mixin small-font {
-  font-size : $small-font;
+  font-size: $small-font;
 }
 
 @mixin normal-font {
-  font-size : $normal-font;
+  font-size: $normal-font;
 }
 
-@mixin transition ($target, $duration) {
+@mixin transition($target, $duration) {
   -webkit-transition: $target $duration ease;
   -moz-transition: $target $duration ease;
   -o-transition: $target $duration ease;
@@ -30,7 +30,7 @@ $normal-font : 14px;
   transition: $target $duration ease;
 }
 
-@mixin rotate ($amount) {
+@mixin rotate($amount) {
   -webkit-transform: rotate($amount);
   -moz-transform: rotate($amount);
   -o-transform: rotate($amount);
@@ -38,16 +38,16 @@ $normal-font : 14px;
   transform: rotate($amount);
 }
 
-@mixin round-borders ($amount) {
-  border-radius : $amount;
+@mixin round-borders($amount) {
+  border-radius: $amount;
   -webkit-border-radius: $amount;
   -moz-border-radius: $amount;
 }
 
 //STYLES
 
-.rcsbDom{
-  /*! keep */;
+.rcsbDom {
+  /*! keep */
 }
 
 svg.rcsbSvg {
@@ -60,68 +60,69 @@ svg.rcsbSvg {
   }
 }
 
-.rcsbSvg{
-  /*! keep */;
+.rcsbSvg {
+  /*! keep */
 }
 
-.rcsbMasterG{
-  /*! keep */;
+.rcsbMasterG {
+  /*! keep */
 }
 
-.rcsbInnerG{
-  /*! keep */;
+.rcsbInnerG {
+  /*! keep */
 }
 
-.rcsbPane{
-  /*! keep */;
+.rcsbPane {
+  /*! keep */
 }
 
-.rcsbTrack{
-  /*! keep */;
+.rcsbTrack {
+  /*! keep */
 }
 
-.rcsbTrackRect{
-  /*! keep */;
+.rcsbTrackRect {
+  /*! keep */
 }
 
-.rcsbArea{
+.rcsbArea {
   cursor: pointer;
 }
 
-.rcsbElement{
+.rcsbElement {
   cursor: pointer;
 }
 
-.rcsbDecorator{
-  /*! keep */;
+.rcsbDecorator {
+  /*! keep */
 }
 
-.rcsbFixed{
-  /*! keep */;
+.rcsbFixed {
+  /*! keep */
 }
 
-.rcsbSelectRect{
-  /*! keep */;
+.rcsbSelectRect {
+  /*! keep */
 }
 
-.rcsbHoverRect{
-  /*! keep */;
+.rcsbHoverRect {
+  /*! keep */
 }
 
-.rcsbBoardRect{
-  /*! keep */;
+.rcsbBoardRect {
+  /*! keep */
 }
 
-.rcsbVariantGrid line, .rcsbVariantGrid path{
-  stroke: #DDDDDD;
+.rcsbVariantGrid line,
+.rcsbVariantGrid path {
+  stroke: #dddddd;
 }
 
-.rcsbAxis{
-  /*! keep */;
+.rcsbAxis {
+  /*! keep */
 }
 
-.rcsbElemSeqBg{
-  /*! keep */;
+.rcsbElemSeqBg {
+  /*! keep */
 }
 
 .rcsbAxis path {

@@ -1,62 +1,72 @@
-import {RcsbFvRowConfigInterface} from "../src/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
-import {RcsbFvDisplayTypes} from "../src/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
-import {RcsbFv} from "../src/RcsbFv/RcsbFv";
+import { RcsbFvRowConfigInterface } from "../src/RcsbFv/RcsbFvConfig/RcsbFvConfigInterface";
+import { RcsbFvDisplayTypes } from "../src/RcsbFv/RcsbFvConfig/RcsbFvDefaultConfigValues";
+import { RcsbFv } from "../src/RcsbFv/RcsbFv";
 
-const sequence = "MTTQAPTFTQPLQSVVVLEGSTATFEAHISGFPVPEVSWFRDGQVISTSTLPGVQISFSD" +
-    "GRAKLTIPAVTKANSGRYSLKATNGSGQATSTAELLVKAETAPPNFVQRLQSMTVRQGSQ" +
-    "VRLQVRVTGIPTPVVKFYRDGAEIQSSLDFQISQEGDLYSLLIAEAYPEDSGTYSVNATN" +
-    "SVGRATSTAELLVQGEEEVPAKKTKTIVSTAQISESRQTRIEKKIEAHFDARSIATVEMV";
-
-
+const sequence =
+  "MTTQAPTFTQPLQSVVVLEGSTATFEAHISGFPVPEVSWFRDGQVISTSTLPGVQISFSD" +
+  "GRAKLTIPAVTKANSGRYSLKATNGSGQATSTAELLVKAETAPPNFVQRLQSMTVRQGSQ" +
+  "VRLQVRVTGIPTPVVKFYRDGAEIQSSLDFQISQEGDLYSLLIAEAYPEDSGTYSVNATN" +
+  "SVGRATSTAELLVQGEEEVPAKKTKTIVSTAQISESRQTRIEKKIEAHFDARSIATVEMV";
 
 const compositeConfig: RcsbFvRowConfigInterface = {
-    trackId: "compositeSequence1",
-    trackHeight: 20,
-    trackColor: "#F9F9F9",
-    displayType: RcsbFvDisplayTypes.COMPOSITE,
-    rowTitle: "Track 1",
-    displayConfig: [
+  trackId: "compositeSequence1",
+  trackHeight: 20,
+  trackColor: "#F9F9F9",
+  displayType: RcsbFvDisplayTypes.COMPOSITE,
+  rowTitle: "Track 1",
+  displayConfig: [
+    {
+      displayType: RcsbFvDisplayTypes.BLOCK,
+      displayColor: "#9999FF",
+      displayId: "compositeBlockSequence",
+      displayData: [
         {
-            displayType: RcsbFvDisplayTypes.BLOCK,
-            displayColor: "#9999FF",
-            displayId:"compositeBlockSequence",
-            displayData: [{
-                begin:1,
-                end:sequence.length
-            }]
+          begin: 1,
+          end: sequence.length,
         },
+      ],
+    },
+    {
+      displayType: RcsbFvDisplayTypes.SEQUENCE,
+      displayColor: "#000000",
+      displayId: "compositeSeqeunce",
+      displayData: [
         {
-            displayType: RcsbFvDisplayTypes.SEQUENCE,
-            displayColor: "#000000",
-            displayId:"compositeSeqeunce",
-            displayData: [{
-                begin:1,
-                label:sequence
-            }]
-        }
-    ]
+          begin: 1,
+          label: sequence,
+        },
+      ],
+    },
+  ],
 };
 
 const boardConfigData = {
-    length: sequence.length,
-    trackWidth: 940,
-    includeAxis: true,
-    includeTooltip: true,
-    highlightHoverElement: true,
-    hideInnerBorder: true,
-    hideRowGlow: false
+  length: sequence.length,
+  trackWidth: 940,
+  includeAxis: true,
+  includeTooltip: true,
+  highlightHoverElement: true,
+  hideInnerBorder: true,
+  hideRowGlow: false,
 };
 
-const fv = new RcsbFv({elementId:"pfv", boardConfigData, rowConfigData:Array(500).fill(undefined).map((i,n)=>{
-    return {
+const fv = new RcsbFv({
+  elementId: "pfv",
+  boardConfigData,
+  rowConfigData: Array(500)
+    .fill(undefined)
+    .map((i, n) => {
+      return {
         ...compositeConfig,
         rowTitle: `Track ${n}`,
-        trackId: "compositeSequence_"+n,
-        trackVisibility: n % 2 == 0
-    };})});
+        trackId: "compositeSequence_" + n,
+        trackVisibility: n % 2 == 0,
+      };
+    }),
+});
 
-fv.then(()=>{
-    console.log("Ready viewer");
+fv.then(() => {
+  console.log("Ready viewer");
 });
 
 /*

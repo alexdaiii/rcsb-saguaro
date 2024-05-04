@@ -1,135 +1,178 @@
 import React from "react";
 
-import {EventType, RcsbFvContextManager,} from "../RcsbFvContextManager/RcsbFvContextManager";
-import {RcsbSelection} from "../../RcsbBoard/RcsbSelection";
-import {RcsbFvBoardFullConfigInterface} from "./RcsbFvBoard";
-import {RcsbFvBoardConfigInterface, RcsbFvRowExtendedConfigInterface} from "../RcsbFvConfig/RcsbFvConfigInterface";
-import {RcsbFvDefaultConfigValues} from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
-import {RcsbFvRow} from "../RcsbFvRow/RcsbFvRow";
+import {
+  EventType,
+  RcsbFvContextManager,
+} from "../RcsbFvContextManager/RcsbFvContextManager";
+import { RcsbSelection } from "../../RcsbBoard/RcsbSelection";
+import { RcsbFvBoardFullConfigInterface } from "./RcsbFvBoard";
+import {
+  RcsbFvBoardConfigInterface,
+  RcsbFvRowExtendedConfigInterface,
+} from "../RcsbFvConfig/RcsbFvConfigInterface";
+import { RcsbFvDefaultConfigValues } from "../RcsbFvConfig/RcsbFvDefaultConfigValues";
+import { RcsbFvRow } from "../RcsbFvRow/RcsbFvRow";
 import classes from "../../scss/RcsbFvRow.module.scss";
-import {RowConfigFactory} from "./Utils/RowConfigFactory";
-import {RcsbScaleInterface} from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
-import {RcsbFvRowRenderConfigInterface} from "./Utils/BoardDataState";
-import {AxisRow} from "./Components/AxisRow";
-import {ReactNode} from "react";
-
+import { RowConfigFactory } from "./Utils/RowConfigFactory";
+import { RcsbScaleInterface } from "../../RcsbBoard/RcsbD3/RcsbD3ScaleFactory";
+import { RcsbFvRowRenderConfigInterface } from "./Utils/BoardDataState";
+import { AxisRow } from "./Components/AxisRow";
+import { ReactNode } from "react";
 
 interface RcsbFvTableInterface extends RcsbFvBoardFullConfigInterface {
-    readonly boardId: string;
-    readonly contextManager: RcsbFvContextManager;
-    readonly xScale: RcsbScaleInterface;
-    readonly selection: RcsbSelection;
-    readonly rowConfigData: Array<RcsbFvRowRenderConfigInterface>;
+  readonly boardId: string;
+  readonly contextManager: RcsbFvContextManager;
+  readonly xScale: RcsbScaleInterface;
+  readonly selection: RcsbSelection;
+  readonly rowConfigData: Array<RcsbFvRowRenderConfigInterface>;
 }
 
-export class RcsbFvTable extends React.Component <RcsbFvTableInterface> {
+export class RcsbFvTable extends React.Component<RcsbFvTableInterface> {
+  /**Inner div board DOM element id*/
+  private readonly boardId: string;
+  /**Global d3 Xscale object shaed among all board tracks*/
+  private readonly xScale: RcsbScaleInterface;
+  /**Global selection shared among all tracks*/
+  private readonly selection: RcsbSelection;
 
-    /**Inner div board DOM element id*/
-    private readonly boardId : string;
-    /**Global d3 Xscale object shaed among all board tracks*/
-    private readonly xScale: RcsbScaleInterface;
-    /**Global selection shared among all tracks*/
-    private readonly selection:RcsbSelection;
+  constructor(props: RcsbFvTableInterface) {
+    super(props);
+    this.xScale = props.xScale;
+    this.selection = props.selection;
+    this.boardId = props.boardId;
+  }
 
-    constructor(props: RcsbFvTableInterface) {
-        super(props);
-        this.xScale = props.xScale;
-        this.selection = props.selection;
-        this.boardId = props.boardId;
+  render(): ReactNode {
+    return (
+      <div
+        id={this.boardId}
+        className={classes.rcsbFvBoard}
+        style={this.configStyle()}
+        onMouseLeave={this.setMouseLeaveBoardCallback()}
+      >
+        {this.props.boardConfigData.includeAxis ? this.getAxisRow() : null}
+        {border(this.props.boardConfigData)}
+        {this.props.rowConfigData
+          .filter((rowData: RcsbFvRowExtendedConfigInterface) => {
+            return rowData.trackVisibility != false;
+          })
+          .map((rowConfig, n) => {
+            const rowId: string = rowConfig.trackId;
+            const rowNumber: number =
+              n + (this.props.boardConfigData.includeAxis ? 1 : 0);
+            return (
+              <div key={rowConfig.key}>
+                <RcsbFvRow
+                  id={rowId}
+                  boardId={this.boardId}
+                  rowNumber={rowNumber}
+                  rowConfigData={RowConfigFactory.getConfig(
+                    rowId,
+                    this.boardId,
+                    rowConfig,
+                    this.props.boardConfigData,
+                  )}
+                  xScale={this.xScale}
+                  selection={this.selection}
+                  contextManager={this.props.contextManager}
+                  renderSchedule={
+                    rowNumber ==
+                    (this.props.boardConfigData.includeAxis ? 1 : 0)
+                      ? "sync"
+                      : rowConfig.renderSchedule ?? "async"
+                  }
+                />
+              </div>
+            );
+          })}
+        {border(this.props.boardConfigData)}
+      </div>
+    );
+  }
+
+  private setMouseLeaveBoardCallback(): (() => void) | undefined {
+    if (
+      this.props.boardConfigData.highlightHoverPosition === true ||
+      typeof this.props.boardConfigData.highlightHoverCallback === "function"
+    )
+      return this.mouseLeaveBoardCallback.bind(this);
+    else return undefined;
+  }
+
+  private mouseLeaveBoardCallback(): void {
+    if (this.props.boardConfigData.highlightHoverPosition === true) {
+      this.props.contextManager.next({
+        eventType: EventType.SET_SELECTION,
+        eventData: {
+          elements: null,
+          mode: "hover",
+        },
+      });
     }
-
-    render(): ReactNode {
-        return (
-            <div id={this.boardId} className={classes.rcsbFvBoard} style={this.configStyle()} onMouseLeave={this.setMouseLeaveBoardCallback()}>
-                {this.props.boardConfigData.includeAxis ? this.getAxisRow(): null}
-                {border(this.props.boardConfigData)}
-                {
-                    this.props.rowConfigData.filter((rowData: RcsbFvRowExtendedConfigInterface) =>{
-                        return rowData.trackVisibility != false;
-                    }).map((rowConfig, n) =>{
-                        const rowId: string = rowConfig.trackId;
-                        const rowNumber: number = n + (this.props.boardConfigData.includeAxis ? 1 : 0);
-                        return (<div key={rowConfig.key}><RcsbFvRow
-                            id={rowId}
-                            boardId={this.boardId}
-                            rowNumber={rowNumber}
-                            rowConfigData={RowConfigFactory.getConfig(rowId,this.boardId,rowConfig,this.props.boardConfigData)}
-                            xScale={this.xScale}
-                            selection={this.selection}
-                            contextManager={this.props.contextManager}
-                            renderSchedule={ rowNumber == (this.props.boardConfigData.includeAxis ? 1 : 0) ? "sync" : (rowConfig.renderSchedule ?? "async")}
-                        /></div>);
-                    })
-                }
-                {border(this.props.boardConfigData)}
-            </div>
-        );
+    if (this.props.boardConfigData.highlightHoverCallback) {
+      this.props.boardConfigData.highlightHoverCallback(
+        this.selection
+          .getSelected("hover")
+          .map((r) => r.rcsbFvTrackDataElement),
+      );
     }
+  }
 
-    private setMouseLeaveBoardCallback(): (()=>void)|undefined{
-        if(this.props.boardConfigData.highlightHoverPosition === true || typeof this.props.boardConfigData.highlightHoverCallback === "function")
-            return this.mouseLeaveBoardCallback.bind(this);
-        else
-            return undefined;
+  private getAxisRow(): ReactNode {
+    return (
+      <AxisRow
+        boardId={this.props.boardId}
+        xScale={this.xScale}
+        selection={this.selection}
+        contextManager={this.props.contextManager}
+        boardConfigData={this.props.boardConfigData}
+      />
+    );
+  }
+
+  /**Returns the full track width (title+annotations)
+   * @return Board track full width
+   * */
+  private configStyle(): React.CSSProperties {
+    let titleWidth: number = RcsbFvDefaultConfigValues.rowTitleWidth;
+    if (typeof this.props.boardConfigData.rowTitleWidth === "number") {
+      titleWidth = this.props.boardConfigData.rowTitleWidth;
     }
-
-    private mouseLeaveBoardCallback(): void{
-        if(this.props.boardConfigData.highlightHoverPosition === true){
-            this.props.contextManager.next({
-                eventType:EventType.SET_SELECTION,
-                eventData:{
-                    elements: null,
-                    mode: "hover"
-                }
-            })
-        }
-        if(this.props.boardConfigData.highlightHoverCallback){
-            this.props.boardConfigData.highlightHoverCallback(this.selection.getSelected('hover').map(r=>r.rcsbFvTrackDataElement));
-        }
+    let trackWidth: number = RcsbFvDefaultConfigValues.rowTitleWidth;
+    if (typeof this.props.boardConfigData.trackWidth === "number") {
+      trackWidth = this.props.boardConfigData.trackWidth;
     }
-
-    private getAxisRow(): ReactNode {
-        return(<AxisRow
-            boardId={this.props.boardId}
-            xScale={this.xScale}
-            selection={this.selection}
-            contextManager={this.props.contextManager}
-            boardConfigData={this.props.boardConfigData}
-        />);
-    }
-
-    /**Returns the full track width (title+annotations)
-     * @return Board track full width
-     * */
-    private configStyle() : React.CSSProperties {
-        let titleWidth : number = RcsbFvDefaultConfigValues.rowTitleWidth;
-        if(typeof this.props.boardConfigData.rowTitleWidth === "number"){
-            titleWidth = this.props.boardConfigData.rowTitleWidth;
-        }
-        let trackWidth : number = RcsbFvDefaultConfigValues.rowTitleWidth;
-        if(typeof this.props.boardConfigData.trackWidth === "number"){
-            trackWidth = this.props.boardConfigData.trackWidth;
-        }
-        return {
-            width: (titleWidth+trackWidth+(this.props.boardConfigData.borderWidth ?? RcsbFvDefaultConfigValues.borderWidth)*2+RcsbFvDefaultConfigValues.titleAndTrackSpace)
-        };
-    }
-
+    return {
+      width:
+        titleWidth +
+        trackWidth +
+        (this.props.boardConfigData.borderWidth ??
+          RcsbFvDefaultConfigValues.borderWidth) *
+          2 +
+        RcsbFvDefaultConfigValues.titleAndTrackSpace,
+    };
+  }
 }
 
 function border(boardConfigData: RcsbFvBoardConfigInterface): ReactNode {
-    const height: number = RcsbFvDefaultConfigValues.borderWidth;
-    return(<div
+  const height: number = RcsbFvDefaultConfigValues.borderWidth;
+  return (
+    <div
+      style={{
+        width: "100%",
+        height,
+      }}
+    >
+      <div
         style={{
-            width: "100%",
-            height
+          width: boardConfigData.trackWidth,
+          height: 0,
+          float: "right",
+          borderTop: height + "px solid #DDD",
+          borderLeft: RcsbFvDefaultConfigValues.borderWidth + "px solid #DDD",
+          borderRight: RcsbFvDefaultConfigValues.borderWidth + "px solid #DDD",
         }}
-    ><div style={{
-        width: boardConfigData.trackWidth,
-        height:0,
-        float:"right",
-        borderTop: height + "px solid #DDD",
-        borderLeft: RcsbFvDefaultConfigValues.borderWidth + "px solid #DDD",
-        borderRight: RcsbFvDefaultConfigValues.borderWidth + "px solid #DDD"
-    }}></div></div>);
+      ></div>
+    </div>
+  );
 }

@@ -25,7 +25,7 @@
     "strictPropertyInitialization": false,
     // MODIFIED to get rcsb saguro to compile
     // Flags unused local variables.
-//    "noUnusedParameters": true,
+    //    "noUnusedParameters": true,
     // Flags unused function parameters.
     "noFallthroughCasesInSwitch": true,
     // Requires handling all cases in a switch statement.
@@ -44,8 +44,8 @@
     "baseUrl": ".",
     // This must be specified if "paths" is specified.
     "paths": {
-      "@/*": ["src/*"],
-    },
+      "@/*": ["src/*"]
+    }
   },
   "include": ["src"],
   // Specifies the directory to include when searching for TypeScript files.
